@@ -82,7 +82,7 @@ function App() {
         selectedButton === 'Void'
       ) {
         newGrid[row][column].cellType = selectedButton;
-      } else {
+      } else if (!newGrid[row][column].objects.includes(selectedButton as ObjectType)) {
         newGrid[row][column].objects.push(selectedButton as ObjectType);
       }
       return newGrid;
