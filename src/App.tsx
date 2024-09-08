@@ -130,7 +130,7 @@ function App() {
           </button>
         ))}
       </div>
-      <svg width="900" height="900">
+      <svg className="grid" width="900" height="900">
         {_.map(_.range(30), (row) =>
           _.map(_.range(30), (column) => (
             <Cell
