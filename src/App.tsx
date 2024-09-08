@@ -188,8 +188,8 @@ function App() {
         </div>
       </div>
       <svg className="grid" width="900" height="900">
-        {_.map(_.range(30), (row) =>
-          _.map(_.range(30), (column) => (
+        {_.map(_.range(grid.length), (row) =>
+          _.map(_.range(grid[0].length), (column) => (
             <Cell
               key={`${row}-${column}`}
               row={row}
