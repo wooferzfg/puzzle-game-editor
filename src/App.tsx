@@ -156,14 +156,7 @@ function App() {
 
   return (
     <div style={{ display: 'flex' }} onMouseUp={handleMouseUp}>
-      <div
-        className="sidebar"
-        style={{
-          width: '200px',
-          padding: '10px',
-          borderRight: '1px solid black',
-        }}
-      >
+      <div className="sidebar">
         {['Wall', 'Floor', 'Void', 'Box', 'Player'].map((button) => (
           <button
             key={button}
@@ -177,14 +170,22 @@ function App() {
           </button>
         ))}
         <div className="resize-buttons">
-          <button onClick={() => addRow('top')}>Add Row Top</button>
-          <button onClick={() => removeRow('top')}>Remove Row Top</button>
-          <button onClick={() => addRow('bottom')}>Add Row Bottom</button>
-          <button onClick={() => removeRow('bottom')}>Remove Row Bottom</button>
-          <button onClick={() => addColumn('left')}>Add Column Left</button>
-          <button onClick={() => removeColumn('left')}>Remove Column Left</button>
-          <button onClick={() => addColumn('right')}>Add Column Right</button>
-          <button onClick={() => removeColumn('right')}>Remove Column Right</button>
+          <div className="resize-buttons-row">
+            <button onClick={() => addRow('top')}>+ Top</button>
+            <button onClick={() => removeRow('top')}>- Top</button>
+          </div>
+          <div className="resize-buttons-row">
+            <button onClick={() => addRow('bottom')}>+ Bottom</button>
+            <button onClick={() => removeRow('bottom')}>- Bottom</button>
+          </div>
+          <div className="resize-buttons-row">
+            <button onClick={() => addColumn('left')}>+ Left</button>
+            <button onClick={() => removeColumn('left')}>- Left</button>
+          </div>
+          <div className="resize-buttons-row">
+            <button onClick={() => addColumn('right')}>+ Right</button>
+            <button onClick={() => removeColumn('right')}>- Right</button>
+          </div>
         </div>
       </div>
       <svg className="grid" width="900" height="900">
