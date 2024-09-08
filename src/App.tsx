@@ -104,8 +104,68 @@ function App() {
     setIsMouseDown(false);
   };
 
+  const addRow = (position: 'top' | 'bottom') => {
+    const newRow: { cellType: CellType; objects: ObjectType[] }[] = Array.from(
+      { length: grid[0].length },
+      () => ({ cellType: 'Void', objects: [] })
+    );
+    if (position === 'top') {
+      setGrid([newRow, ...grid]);
+    } else {
+      setGrid([...grid, newRow]);
+    }
+  };
+
+  const removeRow = (position: 'top' | 'bottom') => {
+    if (grid.length > 1) {
+      if (position === 'top') {
+        setGrid(grid.slice(1));
+      } else {
+        setGrid(grid.slice(0, -1));
+      }
+    }
+  };
+
+  const addColumn = (position: 'left' | 'right') => {
+    const newGrid = grid.map(row => {
+      const newRow = [...row];
+      if (position === 'left') {
+        newRow.unshift({ cellType: 'Void', objects: [] });
+      } else {
+        newRow.push({ cellType: 'Void', objects: [] });
+      }
+      return newRow;
+    });
+    setGrid(newGrid);
+  };
+
+  const removeColumn = (position: 'left' | 'right') => {
+    if (grid[0].length > 1) {
+      const newGrid = grid.map(row => {
+        const newRow = [...row];
+        if (position === 'left') {
+          newRow.shift();
+        } else {
+          newRow.pop();
+        }
+        return newRow;
+      });
+      setGrid(newGrid);
+    }
+  };
+
   return (
     <div style={{ display: 'flex' }} onMouseUp={handleMouseUp}>
+      <div>
+        <button onClick={() => addRow('top')}>Add Row Top</button>
+        <button onClick={() => removeRow('top')}>Remove Row Top</button>
+        <button onClick={() => addRow('bottom')}>Add Row Bottom</button>
+        <button onClick={() => removeRow('bottom')}>Remove Row Bottom</button>
+        <button onClick={() => addColumn('left')}>Add Column Left</button>
+        <button onClick={() => removeColumn('left')}>Remove Column Left</button>
+        <button onClick={() => addColumn('right')}>Add Column Right</button>
+        <button onClick={() => removeColumn('right')}>Remove Column Right</button>
+      </div>
       <div
         style={{
           width: '200px',
