@@ -156,17 +156,8 @@ function App() {
 
   return (
     <div style={{ display: 'flex' }} onMouseUp={handleMouseUp}>
-      <div>
-        <button onClick={() => addRow('top')}>Add Row Top</button>
-        <button onClick={() => removeRow('top')}>Remove Row Top</button>
-        <button onClick={() => addRow('bottom')}>Add Row Bottom</button>
-        <button onClick={() => removeRow('bottom')}>Remove Row Bottom</button>
-        <button onClick={() => addColumn('left')}>Add Column Left</button>
-        <button onClick={() => removeColumn('left')}>Remove Column Left</button>
-        <button onClick={() => addColumn('right')}>Add Column Right</button>
-        <button onClick={() => removeColumn('right')}>Remove Column Right</button>
-      </div>
       <div
+        className="sidebar"
         style={{
           width: '200px',
           padding: '10px',
@@ -178,10 +169,6 @@ function App() {
             key={button}
             onClick={() => setSelectedButton(button as CellType | ObjectType)}
             style={{
-              display: 'block',
-              width: '100%',
-              padding: '10px',
-              marginBottom: '5px',
               backgroundColor:
                 selectedButton === button ? 'lightblue' : 'white',
             }}
@@ -189,6 +176,16 @@ function App() {
             {button}
           </button>
         ))}
+        <div className="resize-buttons">
+          <button onClick={() => addRow('top')}>Add Row Top</button>
+          <button onClick={() => removeRow('top')}>Remove Row Top</button>
+          <button onClick={() => addRow('bottom')}>Add Row Bottom</button>
+          <button onClick={() => removeRow('bottom')}>Remove Row Bottom</button>
+          <button onClick={() => addColumn('left')}>Add Column Left</button>
+          <button onClick={() => removeColumn('left')}>Remove Column Left</button>
+          <button onClick={() => addColumn('right')}>Add Column Right</button>
+          <button onClick={() => removeColumn('right')}>Remove Column Right</button>
+        </div>
       </div>
       <svg className="grid" width="900" height="900">
         {_.map(_.range(30), (row) =>
