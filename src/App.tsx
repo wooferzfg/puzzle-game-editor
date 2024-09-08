@@ -13,7 +13,14 @@ interface CellProps {
   onMouseEnter: () => void;
 }
 
-function Cell({ row, column, cellType, objects, onMouseDown, onMouseEnter }: CellProps) {
+function Cell({
+  row,
+  column,
+  cellType,
+  objects,
+  onMouseDown,
+  onMouseEnter,
+}: CellProps) {
   const getColor = (type: CellType) => {
     switch (type) {
       case 'Wall':
@@ -53,18 +60,27 @@ function Cell({ row, column, cellType, objects, onMouseDown, onMouseEnter }: Cel
 }
 
 function App() {
-  const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>('Void');
+  const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
+    'Void',
+  );
   const [grid, setGrid] = useState(
     _.map(_.range(30), () =>
-      _.map(_.range(30), () => ({ cellType: 'Void' as CellType, objects: [] as ObjectType[] }))
-    )
+      _.map(_.range(30), () => ({
+        cellType: 'Void' as CellType,
+        objects: [] as ObjectType[],
+      })),
+    ),
   );
   const [isMouseDown, setIsMouseDown] = useState(false);
 
   const handleCellUpdate = (row: number, column: number) => {
     setGrid((prevGrid) => {
       const newGrid = _.cloneDeep(prevGrid);
-      if (selectedButton === 'Wall' || selectedButton === 'Floor' || selectedButton === 'Void') {
+      if (
+        selectedButton === 'Wall' ||
+        selectedButton === 'Floor' ||
+        selectedButton === 'Void'
+      ) {
         newGrid[row][column].cellType = selectedButton;
       } else {
         newGrid[row][column].objects.push(selectedButton as ObjectType);
@@ -90,7 +106,13 @@ function App() {
 
   return (
     <div style={{ display: 'flex' }} onMouseUp={handleMouseUp}>
-      <div style={{ width: '200px', padding: '10px', borderRight: '1px solid black' }}>
+      <div
+        style={{
+          width: '200px',
+          padding: '10px',
+          borderRight: '1px solid black',
+        }}
+      >
         {['Wall', 'Floor', 'Void', 'Box', 'Player'].map((button) => (
           <button
             key={button}
@@ -100,7 +122,8 @@ function App() {
               width: '100%',
               padding: '10px',
               marginBottom: '5px',
-              backgroundColor: selectedButton === button ? 'lightblue' : 'white',
+              backgroundColor:
+                selectedButton === button ? 'lightblue' : 'white',
             }}
           >
             {button}
@@ -119,7 +142,7 @@ function App() {
               onMouseDown={() => handleMouseDown(row, column)}
               onMouseEnter={() => handleMouseEnter(row, column)}
             />
-          ))
+          )),
         )}
       </svg>
     </div>
