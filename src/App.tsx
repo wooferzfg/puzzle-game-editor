@@ -65,29 +65,20 @@ function Cell({
   };
 
   return (
-    <g onMouseDown={onMouseDown} onMouseEnter={onMouseEnter} onContextMenu={handleContextMenu}>
-      <rect
-        fill={getColor(cellType)}
-        stroke="red"
-        strokeWidth="1"
-        x={column * 30}
-        y={row * 30}
-        width="30"
-        height="30"
-      />
-      {objects.map((obj, index) => (
-        <text
-          key={index}
-          x={column * 30 + 15}
-          y={row * 30 + 20}
-          textAnchor="middle"
-          fill="white"
-        >
+    <div
+      className="grid-item"
+      onMouseDown={onMouseDown}
+      onMouseEnter={onMouseEnter}
+      onContextMenu={handleContextMenu}
+      style={{ backgroundColor: getColor(cellType) }}
+    >
+      {objects.map((obj) => (
+        <div className="grid-object">
           {obj === 'Box' ? 'B' : 'P'}
-        </text>
+        </div>
       ))}
-      <CellContextMenu menuId={menuId}/>
-    </g>
+      <CellContextMenu menuId={menuId} />
+    </div>
   );
 }
 
@@ -245,22 +236,24 @@ function App() {
           </div>
         </div>
       </div>
-      <svg className="grid" width="900" height="900">
-        {_.map(_.range(grid.length), (row) =>
-          _.map(_.range(grid[0].length), (column) => (
-            <Cell
-              key={`${row}-${column}`}
-              row={row}
-              column={column}
-              cellType={grid[row][column].cellType}
-              objects={grid[row][column].objects}
-              onMouseDown={() => handleMouseDown(row, column)}
-              onMouseEnter={() => handleMouseEnter(row, column)}
-              onRemoveObject={handleRemoveObject}
-            />
-          )),
-        )}
-      </svg>
+      <div className="grid">
+        {_.map(_.range(grid.length), (row) => (
+          <div className="grid-row">
+            {_.map(_.range(grid[0].length), (column) => (
+              <Cell
+                key={`${row}-${column}`}
+                row={row}
+                column={column}
+                cellType={grid[row][column].cellType}
+                objects={grid[row][column].objects}
+                onMouseDown={() => handleMouseDown(row, column)}
+                onMouseEnter={() => handleMouseEnter(row, column)}
+                onRemoveObject={handleRemoveObject}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
