@@ -17,13 +17,15 @@ interface CellProps {
 }
 
 interface CellContextMenuProps {
+  menuId: string;
+}
+
+interface ContextMenuItemClickProps {
   row: number;
   column: number;
   objects: ObjectType[];
   onRemoveObject: (row: number, column: number, object: ObjectType) => void;
 }
-
-const MENU_ID = 'cell-context-menu';
 
 function Cell({
   row,
@@ -34,7 +36,8 @@ function Cell({
   onMouseEnter,
   onRemoveObject,
 }: CellProps) {
-  const { show } = useContextMenu({ id: MENU_ID });
+  const menuId = `${row}-${column}`;
+  const { show } = useContextMenu({ id: menuId });
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -83,15 +86,15 @@ function Cell({
           {obj === 'Box' ? 'B' : 'P'}
         </text>
       ))}
-      <CellContextMenu />
+      <CellContextMenu menuId={menuId}/>
     </g>
   );
 }
 
-const CellContextMenu = () => (
-  <Menu id={MENU_ID}>
+const CellContextMenu = ({ menuId }: CellContextMenuProps) => (
+  <Menu id={menuId}>
     <Item
-      onClick={({ props }: { props?: CellContextMenuProps }) => {
+      onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
         const { row, column, objects, onRemoveObject } = props!;
         if (objects.length > 0) {
           // Assuming you want to remove the first object for simplicity
