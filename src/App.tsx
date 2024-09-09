@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
+import { Menu, Item, useContextMenu } from 'react-contexify';
+import 'react-contexify/dist/ReactContexify.css';
 
 type CellType = 'Wall' | 'Floor' | 'Void';
 type ObjectType = 'Box' | 'Player';
@@ -11,7 +13,17 @@ interface CellProps {
   objects: ObjectType[];
   onMouseDown: () => void;
   onMouseEnter: () => void;
+  onRemoveObject: (row: number, column: number, object: ObjectType) => void;
 }
+
+interface CellContextMenuProps {
+  row: number;
+  column: number;
+  objects: ObjectType[];
+  onRemoveObject: (row: number, column: number, object: ObjectType) => void;
+}
+
+const MENU_ID = 'cell-context-menu';
 
 function Cell({
   row,
@@ -20,7 +32,23 @@ function Cell({
   objects,
   onMouseDown,
   onMouseEnter,
+  onRemoveObject,
 }: CellProps) {
+  const { show } = useContextMenu({ id: MENU_ID });
+
+  const handleContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault();
+    show({
+      event,
+      props: {
+        row,
+        column,
+        objects,
+        onRemoveObject,
+      },
+    });
+  };
+
   const getColor = (type: CellType) => {
     switch (type) {
       case 'Wall':
@@ -34,7 +62,7 @@ function Cell({
   };
 
   return (
-    <g onMouseDown={onMouseDown} onMouseEnter={onMouseEnter}>
+    <g onMouseDown={onMouseDown} onMouseEnter={onMouseEnter} onContextMenu={handleContextMenu}>
       <rect
         fill={getColor(cellType)}
         stroke="red"
@@ -55,9 +83,26 @@ function Cell({
           {obj === 'Box' ? 'B' : 'P'}
         </text>
       ))}
+      <CellContextMenu />
     </g>
   );
 }
+
+const CellContextMenu = () => (
+  <Menu id={MENU_ID}>
+    <Item
+      onClick={({ props }: { props?: CellContextMenuProps }) => {
+        const { row, column, objects, onRemoveObject } = props!;
+        if (objects.length > 0) {
+          // Assuming you want to remove the first object for simplicity
+          onRemoveObject(row, column, objects[0]);
+        }
+      }}
+    >
+      Remove Object
+    </Item>
+  </Menu>
+);
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -154,6 +199,15 @@ function App() {
     }
   };
 
+  const handleRemoveObject = (row: number, column: number, object: ObjectType) => {
+    setGrid((prevGrid) => {
+      const newGrid = _.cloneDeep(prevGrid);
+      const cell = newGrid[row][column];
+      cell.objects = cell.objects.filter((obj) => obj !== object);
+      return newGrid;
+    });
+  };
+
   return (
     <div style={{ display: 'flex' }} onMouseUp={handleMouseUp}>
       <div className="sidebar">
@@ -199,6 +253,7 @@ function App() {
               objects={grid[row][column].objects}
               onMouseDown={() => handleMouseDown(row, column)}
               onMouseEnter={() => handleMouseEnter(row, column)}
+              onRemoveObject={handleRemoveObject}
             />
           )),
         )}
