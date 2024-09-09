@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import _ from 'lodash';
-import { Menu, Item, useContextMenu } from 'react-contexify';
+import { Menu, Item, Separator, useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 
 type CellType = 'Wall' | 'Floor' | 'Void';
@@ -11,19 +11,20 @@ interface CellProps {
   column: number;
   cellType: CellType;
   objects: ObjectType[];
-  onMouseDown: () => void;
+  onMouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   onMouseEnter: () => void;
   onRemoveObject: (row: number, column: number, object: ObjectType) => void;
 }
 
 interface CellContextMenuProps {
   menuId: string;
+  objects: ObjectType[];
+  hideAll: () => void;
 }
 
 interface ContextMenuItemClickProps {
   row: number;
   column: number;
-  objects: ObjectType[];
   onRemoveObject: (row: number, column: number, object: ObjectType) => void;
 }
 
@@ -37,16 +38,18 @@ function Cell({
   onRemoveObject,
 }: CellProps) {
   const menuId = `${row}-${column}`;
-  const { show } = useContextMenu({ id: menuId });
+  const { show, hideAll } = useContextMenu({ id: menuId });
 
   const handleContextMenu = (event: React.MouseEvent) => {
+    if (objects.length === 0) {
+      return;
+    }
     event.preventDefault();
     show({
       event,
       props: {
         row,
         column,
-        objects,
         onRemoveObject,
       },
     });
@@ -66,37 +69,51 @@ function Cell({
 
   return (
     <div
+      key={`${row}-${column}`}
       className="grid-item"
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseEnter}
       onContextMenu={handleContextMenu}
       style={{ backgroundColor: getColor(cellType) }}
     >
-      {objects.map((obj) => (
-        <div className="grid-object">
-          {obj === 'Box' ? 'B' : 'P'}
+      {objects.map((gridObject) => (
+        <div className="grid-object" key={gridObject}>
+          {gridObject === 'Box' ? 'B' : 'P'}
         </div>
       ))}
-      <CellContextMenu menuId={menuId} />
+      <CellContextMenu menuId={menuId} objects={objects} hideAll={hideAll} />
     </div>
   );
 }
 
-const CellContextMenu = ({ menuId }: CellContextMenuProps) => (
-  <Menu id={menuId}>
-    <Item
-      onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
-        const { row, column, objects, onRemoveObject } = props!;
-        if (objects.length > 0) {
-          // Assuming you want to remove the first object for simplicity
-          onRemoveObject(row, column, objects[0]);
-        }
-      }}
-    >
-      Remove Object
-    </Item>
-  </Menu>
-);
+const CellContextMenu = ({ menuId, objects, hideAll }: CellContextMenuProps) => {
+  const menuItems: ReactNode[] = [];
+
+  objects.forEach((gridObject, index) => {
+    if (index !== 0) {
+      menuItems.push(<Separator key={index} />);
+    }
+    menuItems.push(
+      <Item
+        key={gridObject}
+        onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+          const { row, column, onRemoveObject } = props!;
+          onRemoveObject(row, column, gridObject);
+          hideAll();
+        }}
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        Remove {gridObject}
+      </Item>
+    );
+  });
+
+  return (
+    <Menu id={menuId}>
+      {menuItems}
+    </Menu>
+  );
+};
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -128,9 +145,11 @@ function App() {
     });
   };
 
-  const handleMouseDown = (row: number, column: number) => {
-    setIsMouseDown(true);
-    handleCellUpdate(row, column);
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, row: number, column: number) => {
+    if (event.button === 0) { // Left mouse button
+      setIsMouseDown(true);
+      handleCellUpdate(row, column);
+    }
   };
 
   const handleMouseEnter = (row: number, column: number) => {
@@ -238,7 +257,7 @@ function App() {
       </div>
       <div className="grid">
         {_.map(_.range(grid.length), (row) => (
-          <div className="grid-row">
+          <div className="grid-row" key={row}>
             {_.map(_.range(grid[0].length), (column) => (
               <Cell
                 key={`${row}-${column}`}
@@ -246,7 +265,7 @@ function App() {
                 column={column}
                 cellType={grid[row][column].cellType}
                 objects={grid[row][column].objects}
-                onMouseDown={() => handleMouseDown(row, column)}
+                onMouseDown={(event) => handleMouseDown(event, row, column)}
                 onMouseEnter={() => handleMouseEnter(row, column)}
                 onRemoveObject={handleRemoveObject}
               />

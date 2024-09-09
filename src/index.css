@@ -27,6 +27,7 @@ code {
 .grid-item {
   width: 25px;
   height: 25px;
+  position: relative;
 }
 
 .grid-object {
@@ -34,6 +35,7 @@ code {
   text-align: center;
   width: 100%;
   height: 100%;
+  position: absolute;
 }
 
 .sidebar {
