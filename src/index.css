@@ -25,8 +25,8 @@ code {
 }
 
 .grid-item {
-  width: 25px;
-  height: 25px;
+  width: 32px;
+  height: 32px;
   position: relative;
 }
 
@@ -68,4 +68,8 @@ code {
 .resize-buttons-row {
   display: flex;
   gap: 10px;
+}
+
+.main-container {
+  display: flex;
 }

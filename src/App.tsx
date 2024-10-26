@@ -111,7 +111,7 @@ function App() {
   };
 
   return (
-    <div style={{ display: 'flex' }} onMouseUp={handleMouseUp}>
+    <div className="main-container" onMouseUp={handleMouseUp}>
       <div className="sidebar">
         {['Wall', 'Floor', 'Void', 'Box', 'Player'].map((button) => (
           <button
