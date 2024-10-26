@@ -30,6 +30,11 @@ code {
   position: relative;
 }
 
+.grid-item img {
+  user-select: none;
+  pointer-events: none;
+}
+
 .grid-object {
   color: white;
   text-align: center;

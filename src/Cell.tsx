@@ -3,6 +3,7 @@ import { useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 import { CellContextMenu } from './CellContextMenu';
 import { CellProps, CellType } from './types';
+import { GridObject } from './GridObject';
 
 export function Cell({
   row,
@@ -53,9 +54,7 @@ export function Cell({
       style={{ backgroundColor: getColor(cellType) }}
     >
       {objects.map((gridObject) => (
-        <div className="grid-object" key={gridObject}>
-          {gridObject === 'Box' ? 'B' : 'P'}
-        </div>
+        <GridObject gridObject={gridObject} />
       ))}
       <CellContextMenu menuId={menuId} objects={objects} hideAll={hideAll} />
     </div>

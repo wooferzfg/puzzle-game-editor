@@ -22,3 +22,7 @@ export interface ContextMenuItemClickProps {
   column: number;
   onRemoveObject: (row: number, column: number, object: ObjectType) => void;
 }
+
+export interface GridObjectProps {
+  gridObject: ObjectType;
+}
