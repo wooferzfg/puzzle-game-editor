@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
 import { Cell } from './Cell';
+import { CellType, ObjectType } from './types';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -153,7 +154,7 @@ function App() {
                 column={column}
                 cellType={grid[row][column].cellType}
                 objects={grid[row][column].objects}
-                onMouseDown={(event) => handleMouseDown(event, row, column)}
+                onMouseDown={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => handleMouseDown(event, row, column)}
                 onMouseEnter={() => handleMouseEnter(row, column)}
                 onRemoveObject={handleRemoveObject}
               />

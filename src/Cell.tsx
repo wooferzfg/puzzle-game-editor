@@ -2,6 +2,7 @@ import React from 'react';
 import { useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 import { CellContextMenu } from './CellContextMenu';
+import { CellProps, CellType } from './types';
 
 export function Cell({
   row,
