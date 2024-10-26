@@ -110,10 +110,24 @@ function App() {
     });
   };
 
+  const allButtons: (CellType | ObjectType)[] = [
+    'Wall',
+    'Floor',
+    'Void',
+    'Box',
+    'Player',
+    'Door',
+    'Button',
+    'Platform',
+    'Podium',
+    'Arrow Block',
+    'Arrow Button',
+  ];
+
   return (
     <div className="main-container" onMouseUp={handleMouseUp}>
       <div className="sidebar">
-        {['Wall', 'Floor', 'Void', 'Box', 'Player'].map((button) => (
+        {allButtons.map((button) => (
           <button
             key={button}
             onClick={() => setSelectedButton(button as CellType | ObjectType)}

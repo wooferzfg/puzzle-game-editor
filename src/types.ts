@@ -1,5 +1,5 @@
 export type CellType = 'Wall' | 'Floor' | 'Void';
-export type ObjectType = 'Box' | 'Player';
+export type ObjectType = 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button';
 
 export interface CellProps {
   row: number;
