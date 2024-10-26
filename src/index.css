@@ -58,19 +58,19 @@ code {
   cursor: pointer;
 }
 
-.sidebar, .resize-buttons {
+.sidebar, .config-buttons {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   gap: 10px;
 }
 
-.resize-buttons {
+.config-buttons {
   justify-content: end;
   flex-grow: 1;
 }
 
-.resize-buttons-row {
+.config-buttons-row {
   display: flex;
   gap: 10px;
 }

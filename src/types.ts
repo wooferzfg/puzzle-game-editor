@@ -1,6 +1,13 @@
 export type CellType = 'Wall' | 'Floor' | 'Void';
 export type ObjectType = 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button';
 
+export interface CellState {
+  cellType: CellType,
+  objects: ObjectType[],
+}
+
+export type GridState = CellState[][];
+
 export interface CellProps {
   row: number;
   column: number;

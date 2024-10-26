@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
 import { Cell } from './Cell';
-import { CellType, ObjectType } from './types';
+import { CellType, GridState, ObjectType } from './types';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
     'Void',
   );
-  const [grid, setGrid] = useState(
+  const [gridStack, setGridStack] = useState<GridState[]>([]);
+  const [grid, setGrid] = useState<GridState>(
     _.map(_.range(30), () =>
       _.map(_.range(30), () => ({
         cellType: 'Void' as CellType,
@@ -18,20 +19,35 @@ function App() {
   );
   const [isMouseDown, setIsMouseDown] = useState(false);
 
-  const handleCellUpdate = (row: number, column: number) => {
-    setGrid((prevGrid) => {
-      const newGrid = _.cloneDeep(prevGrid);
-      if (
-        selectedButton === 'Wall' ||
-        selectedButton === 'Floor' ||
-        selectedButton === 'Void'
-      ) {
-        newGrid[row][column].cellType = selectedButton;
-      } else if (!newGrid[row][column].objects.includes(selectedButton as ObjectType)) {
-        newGrid[row][column].objects.push(selectedButton as ObjectType);
-      }
-      return newGrid;
+  const updateGrid = (newGrid: GridState) => {
+    setGridStack((prevGridStack) => {
+      const newGridStack = _.clone(prevGridStack);
+      newGridStack.push(grid);
+      return newGridStack;
     });
+    setGrid(newGrid);
+  };
+
+  const undoLastMove = () => {
+    if (_.isEmpty(gridStack)) {
+      return;
+    }
+    const prevGrid = gridStack.pop() as GridState;
+    setGrid(prevGrid);
+  };
+
+  const handleCellUpdate = (row: number, column: number) => {
+    const newGrid = _.cloneDeep(grid);
+    if (
+      selectedButton === 'Wall' ||
+      selectedButton === 'Floor' ||
+      selectedButton === 'Void'
+    ) {
+      newGrid[row][column].cellType = selectedButton;
+    } else if (!newGrid[row][column].objects.includes(selectedButton as ObjectType)) {
+      newGrid[row][column].objects.push(selectedButton as ObjectType);
+    }
+    updateGrid(newGrid);
   };
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, row: number, column: number) => {
@@ -57,18 +73,18 @@ function App() {
       () => ({ cellType: 'Void', objects: [] })
     );
     if (position === 'top') {
-      setGrid([newRow, ...grid]);
+      updateGrid([newRow, ...grid]);
     } else {
-      setGrid([...grid, newRow]);
+      updateGrid([...grid, newRow]);
     }
   };
 
   const removeRow = (position: 'top' | 'bottom') => {
     if (grid.length > 1) {
       if (position === 'top') {
-        setGrid(grid.slice(1));
+        updateGrid(grid.slice(1));
       } else {
-        setGrid(grid.slice(0, -1));
+        updateGrid(grid.slice(0, -1));
       }
     }
   };
@@ -83,7 +99,7 @@ function App() {
       }
       return newRow;
     });
-    setGrid(newGrid);
+    updateGrid(newGrid);
   };
 
   const removeColumn = (position: 'left' | 'right') => {
@@ -97,17 +113,15 @@ function App() {
         }
         return newRow;
       });
-      setGrid(newGrid);
+      updateGrid(newGrid);
     }
   };
 
   const handleRemoveObject = (row: number, column: number, object: ObjectType) => {
-    setGrid((prevGrid) => {
-      const newGrid = _.cloneDeep(prevGrid);
-      const cell = newGrid[row][column];
-      cell.objects = cell.objects.filter((obj) => obj !== object);
-      return newGrid;
-    });
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+    cell.objects = cell.objects.filter((obj) => obj !== object);
+    updateGrid(newGrid);
   };
 
   const allButtons: (CellType | ObjectType)[] = [
@@ -139,22 +153,25 @@ function App() {
             {button}
           </button>
         ))}
-        <div className="resize-buttons">
-          <div className="resize-buttons-row">
+        <div className="config-buttons">
+          <div className="config-buttons-row">
             <button onClick={() => addRow('top')}>+ Top</button>
             <button onClick={() => removeRow('top')}>- Top</button>
           </div>
-          <div className="resize-buttons-row">
+          <div className="config-buttons-row">
             <button onClick={() => addRow('bottom')}>+ Bottom</button>
             <button onClick={() => removeRow('bottom')}>- Bottom</button>
           </div>
-          <div className="resize-buttons-row">
+          <div className="config-buttons-row">
             <button onClick={() => addColumn('left')}>+ Left</button>
             <button onClick={() => removeColumn('left')}>- Left</button>
           </div>
-          <div className="resize-buttons-row">
+          <div className="config-buttons-row">
             <button onClick={() => addColumn('right')}>+ Right</button>
             <button onClick={() => removeColumn('right')}>- Right</button>
+          </div>
+          <div className="config-buttons-row">
+            <button onClick={() => undoLastMove()}>Undo</button>
           </div>
         </div>
       </div>

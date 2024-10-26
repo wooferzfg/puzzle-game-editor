@@ -1,4 +1,4 @@
-import { GridObjectProps, ObjectType } from "./types";
+import { GridObjectProps } from "./types";
 
 import boxImage from './images/block.png';
 import playerImage from './images/player.png';
@@ -40,7 +40,7 @@ export function GridObject({ gridObject }: GridObjectProps) {
 
   return (
     <div className="grid-object" key={gridObject}>
-      <img src={getImageForObject()} />
+      <img alt={gridObject} src={getImageForObject()} />
     </div>
   );
 }
