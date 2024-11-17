@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type CellType = 'Wall' | 'Floor' | 'Void';
 export type ObjectType = 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button';
 
@@ -45,4 +47,9 @@ export interface ContextMenuItemClickProps {
 
 export interface GridObjectProps {
   objectData: ObjectData;
+}
+
+export interface TooltipProps {
+  children: ReactNode;
+  tooltipContent: ReactNode;
 }

@@ -1,9 +1,11 @@
+import _ from 'lodash';
 import React from 'react';
 import { useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 import { CellContextMenu } from './CellContextMenu';
 import { ContextMenuItemClickProps, CellProps, CellType } from './types';
 import { GridObject } from './GridObject';
+import { Tooltip } from './Tooltip';
 
 export function Cell({
   coordinate: { row, column },
@@ -46,19 +48,24 @@ export function Cell({
     }
   };
 
+  const objectIdsTooltip = _.isEmpty(objects) ? null : objects.map((object) => <div>{object.id}</div>);
+
   return (
-    <div
-      key={`${row}-${column}`}
-      className="grid-item"
-      onMouseDown={onMouseDown}
-      onMouseEnter={onMouseEnter}
-      onContextMenu={handleContextMenu}
-      style={{ backgroundColor: getColor(cellType) }}
-    >
-      {objects.map((objectData) => (
-        <GridObject key={objectData.type} objectData={objectData} />
-      ))}
-      <CellContextMenu menuId={menuId} objects={objects} hideAll={hideAll} />
-    </div>
+    <Tooltip tooltipContent={objectIdsTooltip}>
+      <div
+        key={`${row}-${column}`}
+        className="grid-item"
+        onMouseDown={onMouseDown}
+        onMouseEnter={onMouseEnter}
+        onContextMenu={handleContextMenu}
+        style={{ backgroundColor: getColor(cellType) }}
+      >
+        
+          {objects.map((objectData) => (
+            <GridObject key={objectData.type} objectData={objectData} />
+          ))}
+          <CellContextMenu menuId={menuId} objects={objects} hideAll={hideAll} />
+      </div>
+    </Tooltip>
   );
 }
