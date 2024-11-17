@@ -15,7 +15,7 @@ export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuPro
         key={gridObject.type}
         onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
           const { coordinate: { row, column }, onRemoveObject } = props!;
-          onRemoveObject({ row, column }, gridObject.type);
+          onRemoveObject({ row, column }, gridObject.id);
           hideAll();
         }}
         onMouseDown={(event) => event.stopPropagation()}
@@ -34,7 +34,7 @@ export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuPro
             key={gridObject.type}
             onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
               const { coordinate: { row, column }, onSetRotation } = props!;
-              onSetRotation({ row, column }, gridObject.type, direction);
+              onSetRotation({ row, column }, gridObject.id, direction);
               hideAll();
             }}
             onMouseDown={(event) => event.stopPropagation()}

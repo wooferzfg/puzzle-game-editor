@@ -6,6 +6,7 @@ export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export interface ObjectData {
   type: ObjectType;
   rotationDirection: RotationDirection;
+  id: string;
 }
 
 export interface CellState {
@@ -26,8 +27,8 @@ export interface CellProps {
   objects: ObjectData[];
   onMouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   onMouseEnter: () => void;
-  onRemoveObject: (coordinate: CellCoordinate, object: ObjectType) => void;
-  onSetRotation: (coordinate: CellCoordinate, object: ObjectType, direction: RotationDirection) => void;
+  onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
+  onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
 }
 
 export interface CellContextMenuProps {
@@ -38,8 +39,8 @@ export interface CellContextMenuProps {
 
 export interface ContextMenuItemClickProps {
   coordinate: CellCoordinate;
-  onRemoveObject: (coordinate: CellCoordinate, object: ObjectType) => void;
-  onSetRotation: (coordinate: CellCoordinate, object: ObjectType, direction: RotationDirection) => void;
+  onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
+  onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
 }
 
 export interface GridObjectProps {

@@ -37,8 +37,9 @@ function App() {
   };
 
   const handleCellUpdate = (row: number, column: number) => {
-    if (grid[row][column].objects.some((gridObject) => gridObject.type === selectedButton)) {
-      handleRemoveObject({ row, column }, selectedButton as ObjectType);
+    const existingObject = grid[row][column].objects.find((gridObject) => gridObject.type === selectedButton)
+    if (existingObject) {
+      handleRemoveObject({ row, column }, existingObject.id);
       return;
     }
 
@@ -53,6 +54,7 @@ function App() {
       newGrid[row][column].objects.push({
         type: selectedButton as ObjectType,
         rotationDirection: 'up',
+        id: _.uniqueId(`${_.kebabCase(selectedButton)}-`),
       });
     }
     updateGrid(newGrid);
@@ -125,18 +127,18 @@ function App() {
     }
   };
 
-  const handleRemoveObject = ({ row, column }: CellCoordinate, typeToRemove: ObjectType) => {
+  const handleRemoveObject = ({ row, column }: CellCoordinate, idToRemove: string) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
-    cell.objects = cell.objects.filter((cellObject) => cellObject.type !== typeToRemove);
+    cell.objects = cell.objects.filter((cellObject) => cellObject.id !== idToRemove);
     updateGrid(newGrid);
   };
 
-  const handleSetRotation = ({ row, column }: CellCoordinate, typeToUpdate: ObjectType, direction: RotationDirection) => {
+  const handleSetRotation = ({ row, column }: CellCoordinate, idToUpdate: string, direction: RotationDirection) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
 
-    const objectToUpdate = cell.objects.find((cellObject) => cellObject.type === typeToUpdate);
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
     objectToUpdate!.rotationDirection = direction;
 
     updateGrid(newGrid);
