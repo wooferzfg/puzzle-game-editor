@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Menu, Item, Separator, Submenu } from 'react-contexify';
+import { Menu, Item, Separator } from 'react-contexify';
 import { CellContextMenuProps, ContextMenuItemClickProps, ObjectType, RotationDirection } from './types';
 
 export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuProps) {
