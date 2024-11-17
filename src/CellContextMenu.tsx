@@ -6,8 +6,11 @@ export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuPro
   const menuItems: ReactNode[] = [];
 
   objects.forEach((gridObject, index) => {
-    const objectItems = [];
-    objectItems.push(
+    if (index !== 0) {
+      menuItems.push(<Separator key={index} />);
+    }
+
+    menuItems.push(
       <Item
         key={gridObject.type}
         onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
@@ -26,7 +29,7 @@ export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuPro
       const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
 
       rotationDirections.forEach((direction) => {
-        objectItems.push(
+        menuItems.push(
           <Item
             key={gridObject.type}
             onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
@@ -36,23 +39,10 @@ export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuPro
             }}
             onMouseDown={(event) => event.stopPropagation()}
           >
-            Set rotation: {direction}
+            {gridObject.type} rotation: {direction}
           </Item>
         );
       })
-    }
-
-    if (index !== 0) {
-      menuItems.push(<Separator key={index} />);
-    }
-    if (objectItems.length === 1) {
-      menuItems.push(objectItems[0]);
-    } else {
-      menuItems.push(
-        <Submenu label={gridObject.type}>
-          {objectItems}
-        </Submenu>
-      );
     }
   });
 
