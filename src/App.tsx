@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
 import { Cell } from './Cell';
-import { CellCoordinate, CellState, CellType, GridState, ObjectData, ObjectType } from './types';
+import { CellCoordinate, CellState, CellType, GridState, ObjectData, ObjectType, RotationDirection } from './types';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -132,6 +132,16 @@ function App() {
     updateGrid(newGrid);
   };
 
+  const handleSetRotation = ({ row, column }: CellCoordinate, typeToUpdate: ObjectType, direction: RotationDirection) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.type === typeToUpdate);
+    objectToUpdate!.rotationDirection = direction;
+
+    updateGrid(newGrid);
+  };
+
   const allButtons: (CellType | ObjectType)[] = [
     'Wall',
     'Floor',
@@ -195,6 +205,7 @@ function App() {
                 onMouseDown={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => handleMouseDown(event, row, column)}
                 onMouseEnter={() => handleMouseEnter(row, column)}
                 onRemoveObject={handleRemoveObject}
+                onSetRotation={handleSetRotation}
               />
             ))}
           </div>

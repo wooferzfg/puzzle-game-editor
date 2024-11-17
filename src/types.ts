@@ -27,6 +27,7 @@ export interface CellProps {
   onMouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   onMouseEnter: () => void;
   onRemoveObject: (coordinate: CellCoordinate, object: ObjectType) => void;
+  onSetRotation: (coordinate: CellCoordinate, object: ObjectType, direction: RotationDirection) => void;
 }
 
 export interface CellContextMenuProps {
@@ -38,6 +39,7 @@ export interface CellContextMenuProps {
 export interface ContextMenuItemClickProps {
   coordinate: CellCoordinate;
   onRemoveObject: (coordinate: CellCoordinate, object: ObjectType) => void;
+  onSetRotation: (coordinate: CellCoordinate, object: ObjectType, direction: RotationDirection) => void;
 }
 
 export interface GridObjectProps {

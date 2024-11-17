@@ -12,6 +12,7 @@ export function Cell({
   onMouseDown,
   onMouseEnter,
   onRemoveObject,
+  onSetRotation,
 }: CellProps) {
   const menuId = `${row}-${column}`;
   const { show, hideAll } = useContextMenu({ id: menuId });
@@ -25,6 +26,7 @@ export function Cell({
     const props: ContextMenuItemClickProps = {
       coordinate: { row, column },
       onRemoveObject,
+      onSetRotation,
     };
     show({
       event,
