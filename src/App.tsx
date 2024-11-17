@@ -171,7 +171,7 @@ function App() {
             <button onClick={() => removeColumn('right')}>- Right</button>
           </div>
           <div className="config-buttons-row">
-            <button onClick={() => undoLastMove()}>Undo</button>
+            <button disabled={_.isEmpty(gridStack)} onClick={() => undoLastMove()}>Undo</button>
           </div>
         </div>
       </div>
