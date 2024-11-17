@@ -9,38 +9,40 @@ import podiumImage from './images/podium.png';
 import arrowBlockImage from './images/arrow_block.png';
 import arrowButtonImage from './images/arrow_button.png';
 
-export function GridObject({ gridObject }: GridObjectProps) {
+export function GridObject({ objectData }: GridObjectProps) {
+  const { type, rotationDirection } = objectData;
+
   const getImageForObject = () => {
-    if (gridObject === 'Box') {
+    if (type === 'Box') {
       return boxImage;
     }
-    if (gridObject === 'Player') {
+    if (type === 'Player') {
       return playerImage;
     }
-    if (gridObject === 'Door') {
+    if (type === 'Door') {
       return doorImage;
     }
-    if (gridObject === 'Button') {
+    if (type === 'Button') {
       return buttonImage;
     }
-    if (gridObject === 'Platform') {
+    if (type === 'Platform') {
       return platformImage;
     }
-    if (gridObject === 'Podium') {
+    if (type === 'Podium') {
       return podiumImage;
     }
-    if (gridObject === 'Arrow Block') {
+    if (type === 'Arrow Block') {
       return arrowBlockImage;
     }
-    if (gridObject === 'Arrow Button') {
+    if (type === 'Arrow Button') {
       return arrowButtonImage;
     }
-    throw new Error(`No image for grid object: ${gridObject}`);
+    throw new Error(`No image for grid object: ${type}`);
   };
 
   return (
-    <div className="grid-object" key={gridObject}>
-      <img alt={gridObject} src={getImageForObject()} />
+    <div className={`grid-object ${rotationDirection}`} key={type}>
+      <img alt={type} src={getImageForObject()} />
     </div>
   );
 }

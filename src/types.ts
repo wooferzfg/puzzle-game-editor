@@ -1,35 +1,45 @@
 export type CellType = 'Wall' | 'Floor' | 'Void';
 export type ObjectType = 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button';
 
+export type RotationDirection = 'up' | 'right' | 'down' | 'left';
+
+export interface ObjectData {
+  type: ObjectType;
+  rotationDirection: RotationDirection;
+}
+
 export interface CellState {
   cellType: CellType,
-  objects: ObjectType[],
+  objects: ObjectData[],
+}
+
+export interface CellCoordinate {
+  row: number;
+  column: number;
 }
 
 export type GridState = CellState[][];
 
 export interface CellProps {
-  row: number;
-  column: number;
+  coordinate: CellCoordinate;
   cellType: CellType;
-  objects: ObjectType[];
+  objects: ObjectData[];
   onMouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   onMouseEnter: () => void;
-  onRemoveObject: (row: number, column: number, object: ObjectType) => void;
+  onRemoveObject: (coordinate: CellCoordinate, object: ObjectType) => void;
 }
 
 export interface CellContextMenuProps {
   menuId: string;
-  objects: ObjectType[];
+  objects: ObjectData[];
   hideAll: () => void;
 }
 
 export interface ContextMenuItemClickProps {
-  row: number;
-  column: number;
-  onRemoveObject: (row: number, column: number, object: ObjectType) => void;
+  coordinate: CellCoordinate;
+  onRemoveObject: (coordinate: CellCoordinate, object: ObjectType) => void;
 }
 
 export interface GridObjectProps {
-  gridObject: ObjectType;
+  objectData: ObjectData;
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
 import { Cell } from './Cell';
-import { CellType, GridState, ObjectType } from './types';
+import { CellCoordinate, CellState, CellType, GridState, ObjectData, ObjectType } from './types';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -13,11 +13,11 @@ function App() {
     _.map(_.range(30), () =>
       _.map(_.range(30), () => ({
         cellType: 'Void' as CellType,
-        objects: [] as ObjectType[],
+        objects: [] as ObjectData[],
       })),
     ),
   );
-  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [mouseDownOnCell, setMouseDownOnCell] = useState<CellCoordinate | null>(null);
 
   const updateGrid = (newGrid: GridState) => {
     setGridStack((prevGridStack) => {
@@ -37,6 +37,11 @@ function App() {
   };
 
   const handleCellUpdate = (row: number, column: number) => {
+    if (grid[row][column].objects.some((gridObject) => gridObject.type === selectedButton)) {
+      handleRemoveObject({ row, column }, selectedButton as ObjectType);
+      return;
+    }
+
     const newGrid = _.cloneDeep(grid);
     if (
       selectedButton === 'Wall' ||
@@ -44,31 +49,34 @@ function App() {
       selectedButton === 'Void'
     ) {
       newGrid[row][column].cellType = selectedButton;
-    } else if (!newGrid[row][column].objects.includes(selectedButton as ObjectType)) {
-      newGrid[row][column].objects.push(selectedButton as ObjectType);
+    } else {
+      newGrid[row][column].objects.push({
+        type: selectedButton as ObjectType,
+        rotationDirection: 'up',
+      });
     }
     updateGrid(newGrid);
   };
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, row: number, column: number) => {
     if (event.button === 0) { // Left mouse button
-      setIsMouseDown(true);
+      setMouseDownOnCell({ row, column });
       handleCellUpdate(row, column);
     }
   };
 
   const handleMouseEnter = (row: number, column: number) => {
-    if (isMouseDown) {
+    if (mouseDownOnCell && (mouseDownOnCell.row !== row || mouseDownOnCell.column !== column)) {
       handleCellUpdate(row, column);
     }
   };
 
   const handleMouseUp = () => {
-    setIsMouseDown(false);
+    setMouseDownOnCell(null);
   };
 
   const addRow = (position: 'top' | 'bottom') => {
-    const newRow: { cellType: CellType; objects: ObjectType[] }[] = Array.from(
+    const newRow: CellState[] = Array.from(
       { length: grid[0].length },
       () => ({ cellType: 'Void', objects: [] })
     );
@@ -117,10 +125,10 @@ function App() {
     }
   };
 
-  const handleRemoveObject = (row: number, column: number, object: ObjectType) => {
+  const handleRemoveObject = ({ row, column }: CellCoordinate, typeToRemove: ObjectType) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
-    cell.objects = cell.objects.filter((obj) => obj !== object);
+    cell.objects = cell.objects.filter((cellObject) => cellObject.type !== typeToRemove);
     updateGrid(newGrid);
   };
 
@@ -181,8 +189,7 @@ function App() {
             {_.map(_.range(grid[0].length), (column) => (
               <Cell
                 key={`${row}-${column}`}
-                row={row}
-                column={column}
+                coordinate={{ row, column }}
                 cellType={grid[row][column].cellType}
                 objects={grid[row][column].objects}
                 onMouseDown={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => handleMouseDown(event, row, column)}

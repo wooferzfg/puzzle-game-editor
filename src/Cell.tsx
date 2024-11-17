@@ -2,12 +2,11 @@ import React from 'react';
 import { useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 import { CellContextMenu } from './CellContextMenu';
-import { CellProps, CellType } from './types';
+import { ContextMenuItemClickProps, CellProps, CellType } from './types';
 import { GridObject } from './GridObject';
 
 export function Cell({
-  row,
-  column,
+  coordinate: { row, column },
   cellType,
   objects,
   onMouseDown,
@@ -22,13 +21,14 @@ export function Cell({
       return;
     }
     event.preventDefault();
+
+    const props: ContextMenuItemClickProps = {
+      coordinate: { row, column },
+      onRemoveObject,
+    };
     show({
       event,
-      props: {
-        row,
-        column,
-        onRemoveObject,
-      },
+      props,
     });
   };
 
@@ -53,8 +53,8 @@ export function Cell({
       onContextMenu={handleContextMenu}
       style={{ backgroundColor: getColor(cellType) }}
     >
-      {objects.map((gridObject) => (
-        <GridObject gridObject={gridObject} />
+      {objects.map((objectData) => (
+        <GridObject key={objectData.type} objectData={objectData} />
       ))}
       <CellContextMenu menuId={menuId} objects={objects} hideAll={hideAll} />
     </div>

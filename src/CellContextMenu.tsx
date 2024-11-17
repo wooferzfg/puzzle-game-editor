@@ -11,15 +11,15 @@ export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuPro
     }
     menuItems.push(
       <Item
-        key={gridObject}
+        key={gridObject.type}
         onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
-          const { row, column, onRemoveObject } = props!;
-          onRemoveObject(row, column, gridObject);
+          const { coordinate: { row, column }, onRemoveObject } = props!;
+          onRemoveObject({ row, column }, gridObject.type);
           hideAll();
         }}
         onMouseDown={(event) => event.stopPropagation()}
       >
-        Remove {gridObject}
+        Remove {gridObject.type}
       </Item>
     );
   });
