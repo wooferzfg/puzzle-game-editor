@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
 import { Cell } from './Cell';
-import { CellCoordinate, CellState, CellType, GridState, ObjectData, ObjectType, RotationDirection } from './types';
+import { CellCoordinate, CellState, CellType, cellTypes, GridState, ObjectData, ObjectType, objectTypes, RotationDirection } from './types';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -44,12 +44,8 @@ function App() {
     }
 
     const newGrid = _.cloneDeep(grid);
-    if (
-      selectedButton === 'Wall' ||
-      selectedButton === 'Floor' ||
-      selectedButton === 'Void'
-    ) {
-      newGrid[row][column].cellType = selectedButton;
+    if (cellTypes.includes(selectedButton as CellType)) {
+      newGrid[row][column].cellType = selectedButton as CellType;
     } else {
       newGrid[row][column].objects.push({
         type: selectedButton as ObjectType,
@@ -144,19 +140,7 @@ function App() {
     updateGrid(newGrid);
   };
 
-  const allButtons: (CellType | ObjectType)[] = [
-    'Wall',
-    'Floor',
-    'Void',
-    'Box',
-    'Player',
-    'Door',
-    'Button',
-    'Platform',
-    'Podium',
-    'Arrow Block',
-    'Arrow Button',
-  ];
+  const allButtons: (CellType | ObjectType)[] = _.concat(cellTypes, objectTypes);
 
   return (
     <div className="main-container" onMouseUp={handleMouseUp}>

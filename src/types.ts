@@ -1,9 +1,13 @@
 import { ReactNode } from "react";
 
 export type CellType = 'Wall' | 'Floor' | 'Void';
+export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void'];
+
 export type ObjectType = 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button';
+export const objectTypes: ObjectType[] = ['Box', 'Player', 'Door', 'Button', 'Platform', 'Podium', 'Arrow Block', 'Arrow Button'];
 
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
+export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
 
 export interface ObjectData {
   type: ObjectType;
