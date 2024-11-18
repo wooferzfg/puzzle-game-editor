@@ -65,6 +65,7 @@ function App() {
 
   const handleMouseEnter = (row: number, column: number) => {
     if (mouseDownOnCell && (mouseDownOnCell.row !== row || mouseDownOnCell.column !== column)) {
+      setMouseDownOnCell({ row, column });
       handleCellUpdate(row, column);
     }
   };
