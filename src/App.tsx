@@ -47,13 +47,35 @@ function App() {
     if (cellTypes.includes(selectedButton as CellType)) {
       newGrid[row][column].cellType = selectedButton as CellType;
     } else {
+      const objectType = selectedButton as ObjectType;
       newGrid[row][column].objects.push({
-        type: selectedButton as ObjectType,
+        type: objectType,
         rotationDirection: 'up',
-        id: _.uniqueId(`${_.kebabCase(selectedButton)}-`),
+        id: generateId(objectType),
       });
     }
     updateGrid(newGrid);
+  };
+
+  const idAlreadyExists = (objectId: string) => {
+    for (let row = 0; row < grid.length; row += 1) {
+      for (let column = 0; column < grid[row].length; column += 1) {
+        if (grid[row][column].objects.some((object) => object.id === objectId)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  const generateId = (objectType: ObjectType) => {
+    const objectName = _.kebabCase(objectType);
+    for (let i = 1; ; i+= 1) {
+      const objectId = `${objectName}-${i}`;
+      if (!idAlreadyExists(objectId)) {
+        return objectId;
+      }
+    }
   };
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, row: number, column: number) => {
@@ -183,7 +205,7 @@ function App() {
       <div className="grid">
         {_.map(_.range(grid.length), (row) => (
           <div className="grid-row" key={row}>
-            {_.map(_.range(grid[0].length), (column) => (
+            {_.map(_.range(grid[row].length), (column) => (
               <Cell
                 key={`${row}-${column}`}
                 coordinate={{ row, column }}
