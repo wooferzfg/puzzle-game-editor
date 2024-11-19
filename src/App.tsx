@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
 import { Cell } from './Cell';
-import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, RotationDirection, wireTypes } from './types';
+import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, RotationDirection, wireTypes } from './types';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -18,8 +18,28 @@ function App() {
     ),
   );
   const [mouseDownOnCell, setMouseDownOnCell] = useState<CellCoordinate | null>(null);
+  const [highlightedCells, setHighlightedCells] = useState<CellCoordinate[]>([]);
+
+  const cleanConnections = (newGrid: GridState) => {
+    const gridObjects = getGridObjects(newGrid);
+
+    for (let row = 0; row < newGrid.length; row += 1) {
+      for (let column = 0; column < newGrid[row].length; column += 1) {
+        newGrid[row][column].objects.forEach((object) => {
+          if (!object.connectedObjectId) {
+            return;
+          }
+          const connectedObject = gridObjects[object.connectedObjectId];
+          if (!connectedObject) {
+            object.connectedObjectId = null;
+          }
+        });
+      }
+    }
+  }
 
   const updateGrid = (newGrid: GridState) => {
+    cleanConnections(newGrid);
     setGridStack((prevGridStack) => {
       const newGridStack = _.clone(prevGridStack);
       newGridStack.push(grid);
@@ -79,6 +99,23 @@ function App() {
     }
   };
 
+  const updateHighlightedCells = (row: number, column: number) => {
+    const newHighlightedCells: CellCoordinate[] = [];
+    grid[row][column].objects.forEach((gridObject) => {
+      if (gridObject.connectedObjectId) {
+        const connectedObject = doorAndWireObjects.find((doorOrWire) => doorOrWire.object.id === gridObject.connectedObjectId);
+        newHighlightedCells.push(connectedObject!.coordinate);
+      }
+
+      _.values(allObjects).forEach((otherObject) => {
+        if (otherObject.object.connectedObjectId === gridObject.id) {
+          newHighlightedCells.push(otherObject.coordinate);
+        }
+      })
+    });
+    setHighlightedCells(newHighlightedCells);
+  };
+
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, row: number, column: number) => {
     if (event.button === 0) { // Left mouse button
       setMouseDownOnCell({ row, column });
@@ -91,6 +128,7 @@ function App() {
       setMouseDownOnCell({ row, column });
       handleCellUpdate(row, column);
     }
+    updateHighlightedCells(row, column);
   };
 
   const handleMouseUp = () => {
@@ -169,6 +207,20 @@ function App() {
     const cell = newGrid[row][column];
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+
+    if (otherObjectId) {
+      const allObjects = getGridObjects(newGrid);
+      const otherObject = allObjects[otherObjectId];
+
+      if (doorTypes.includes(otherObject!.object.type)) {
+        _.values(allObjects).forEach((object) => {
+          if (object.object.connectedObjectId === otherObjectId) {
+            object.object.connectedObjectId = null;
+          }
+        })
+      }
+    }
+
     objectToUpdate!.connectedObjectId = otherObjectId;
 
     updateGrid(newGrid);
@@ -176,20 +228,19 @@ function App() {
 
   const allButtons: (CellType | ObjectType)[] = _.concat(cellTypes, objectTypes);
 
-  const getDoorAndWireObjects = () => {
-    const objects: ObjectData[] = [];
-    for (let row = 0; row < grid.length; row += 1) {
-      for (let column = 0; column < grid[row].length; column += 1) {
-        grid[row][column].objects.forEach((object) => {
-          if (wireTypes.includes(object.type) || doorTypes.includes(object.type)) {
-            objects.push(object);
-          }
+  const getGridObjects = (currentGrid: GridState) => {
+    const objects: {[key: string]: ObjectWithCoordinate} = {};
+    for (let row = 0; row < currentGrid.length; row += 1) {
+      for (let column = 0; column < currentGrid[row].length; column += 1) {
+        currentGrid[row][column].objects.forEach((object) => {
+          objects[object.id] = { object, coordinate: { row, column } };
         });
       }
     }
     return objects;
   };
-  const doorsAndWireObjects: ObjectData[] = getDoorAndWireObjects();
+  const allObjects: {[key: string]: ObjectWithCoordinate} = getGridObjects(grid);
+  const doorAndWireObjects: ObjectWithCoordinate[] = _.filter(allObjects, (object) => doorTypes.includes(object.object.type) || wireTypes.includes(object.object.type));
 
   return (
     <div className="main-container" onMouseUp={handleMouseUp}>
@@ -236,13 +287,16 @@ function App() {
                 key={`${row}-${column}`}
                 coordinate={{ row, column }}
                 cellType={grid[row][column].cellType}
+                isHighlighted={highlightedCells.some(
+                  ({ row: highlightedRow, column: highlightedColumn }) => highlightedRow === row && highlightedColumn === column
+                )}
                 objects={grid[row][column].objects}
                 onMouseDown={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => handleMouseDown(event, row, column)}
                 onMouseEnter={() => handleMouseEnter(row, column)}
                 onRemoveObject={handleRemoveObject}
                 onSetRotation={handleSetRotation}
                 onConnect={handleConnect}
-                doorsAndWires={doorsAndWireObjects}
+                doorsAndWires={doorAndWireObjects}
               />
             ))}
           </div>

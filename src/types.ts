@@ -20,6 +20,11 @@ export interface ObjectData {
   connectedObjectId: string | null;
 }
 
+export interface ObjectWithCoordinate {
+  object: ObjectData;
+  coordinate: CellCoordinate;
+}
+
 export interface CellState {
   cellType: CellType,
   objects: ObjectData[],
@@ -36,19 +41,20 @@ export interface CellProps {
   coordinate: CellCoordinate;
   cellType: CellType;
   objects: ObjectData[];
+  isHighlighted: boolean;
   onMouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   onMouseEnter: () => void;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | null) => void;
-  doorsAndWires: ObjectData[];
+  doorsAndWires: ObjectWithCoordinate[];
 }
 
 export interface CellContextMenuProps {
   menuId: string;
   objects: ObjectData[];
   hideAll: () => void;
-  doorsAndWires: ObjectData[];
+  doorsAndWires: ObjectWithCoordinate[];
 }
 
 export interface ContextMenuItemClickProps {

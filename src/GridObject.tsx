@@ -51,6 +51,7 @@ export function GridObject({ objectData }: GridObjectProps) {
   return (
     <div className={`grid-object ${rotationDirection}`} key={type}>
       <img alt={type} src={getImageForObject()} />
+      <div className="highlight-box" />
     </div>
   );
 }

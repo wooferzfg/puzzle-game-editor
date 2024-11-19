@@ -49,7 +49,7 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
       const subMenuItems: ReactNode[] = [];
 
       doorsAndWires.forEach((doorOrWire) => {
-        if (doorOrWire.id === gridObject.id || doorOrWire.connectedObjectId === gridObject.id) {
+        if (doorOrWire.object.id === gridObject.id || doorOrWire.object.connectedObjectId === gridObject.id) {
           return;
         }
 
@@ -58,12 +58,12 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
             key={gridObject.type}
             onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
               const { coordinate: { row, column }, onConnect } = props!;
-              onConnect({ row, column }, gridObject.id, doorOrWire.id);
+              onConnect({ row, column }, gridObject.id, doorOrWire.object.id);
               hideAll();
             }}
             onMouseDown={(event) => event.stopPropagation()}
           >
-            {doorOrWire.id}
+            {doorOrWire.object.id}
           </Item>
         );
       });

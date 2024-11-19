@@ -11,6 +11,7 @@ export function Cell({
   coordinate: { row, column },
   cellType,
   objects,
+  isHighlighted,
   onMouseDown,
   onMouseEnter,
   onRemoveObject,
@@ -61,7 +62,7 @@ export function Cell({
     <Tooltip tooltipContent={objectIdsTooltip}>
       <div
         key={`${row}-${column}`}
-        className="grid-item"
+        className={`grid-item ${isHighlighted ? 'highlighted' : ''}`}
         onMouseDown={onMouseDown}
         onMouseEnter={onMouseEnter}
         onContextMenu={handleContextMenu}
