@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
 import { Cell } from './Cell';
-import { CellCoordinate, CellState, CellType, cellTypes, GridState, ObjectData, ObjectType, objectTypes, RotationDirection } from './types';
+import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, RotationDirection, wireTypes } from './types';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -52,6 +52,7 @@ function App() {
         type: objectType,
         rotationDirection: 'up',
         id: generateId(objectType),
+        connectedObjectId: null,
       });
     }
     updateGrid(newGrid);
@@ -163,7 +164,32 @@ function App() {
     updateGrid(newGrid);
   };
 
+  const handleConnect = ({ row, column }: CellCoordinate, idToUpdate: string, otherObjectId: string | null) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.connectedObjectId = otherObjectId;
+
+    updateGrid(newGrid);
+  };
+
   const allButtons: (CellType | ObjectType)[] = _.concat(cellTypes, objectTypes);
+
+  const getDoorAndWireObjects = () => {
+    const objects: ObjectData[] = [];
+    for (let row = 0; row < grid.length; row += 1) {
+      for (let column = 0; column < grid[row].length; column += 1) {
+        grid[row][column].objects.forEach((object) => {
+          if (wireTypes.includes(object.type) || doorTypes.includes(object.type)) {
+            objects.push(object);
+          }
+        });
+      }
+    }
+    return objects;
+  };
+  const doorsAndWireObjects: ObjectData[] = getDoorAndWireObjects();
 
   return (
     <div className="main-container" onMouseUp={handleMouseUp}>
@@ -215,6 +241,8 @@ function App() {
                 onMouseEnter={() => handleMouseEnter(row, column)}
                 onRemoveObject={handleRemoveObject}
                 onSetRotation={handleSetRotation}
+                onConnect={handleConnect}
+                doorsAndWires={doorsAndWireObjects}
               />
             ))}
           </div>

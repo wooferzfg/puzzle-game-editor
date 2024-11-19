@@ -3,8 +3,12 @@ import { ReactNode } from "react";
 export type CellType = 'Wall' | 'Floor' | 'Void';
 export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void'];
 
-export type ObjectType = 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button';
-export const objectTypes: ObjectType[] = ['Box', 'Player', 'Door', 'Button', 'Platform', 'Podium', 'Arrow Block', 'Arrow Button'];
+export type ObjectType = 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire';
+export const objectTypes: ObjectType[] = ['Box', 'Player', 'Door', 'Button', 'Platform', 'Podium', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire'];
+export const switchTypes: ObjectType[] = ['Button', 'Arrow Button'];
+export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire'];
+export const doorTypes: ObjectType[] = ['Door', 'Platform'];
+export const rotatableObjectTypes: ObjectType[] = ['Arrow Block', 'Arrow Button'];
 
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
@@ -13,6 +17,7 @@ export interface ObjectData {
   type: ObjectType;
   rotationDirection: RotationDirection;
   id: string;
+  connectedObjectId: string | null;
 }
 
 export interface CellState {
@@ -35,18 +40,22 @@ export interface CellProps {
   onMouseEnter: () => void;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
+  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | null) => void;
+  doorsAndWires: ObjectData[];
 }
 
 export interface CellContextMenuProps {
   menuId: string;
   objects: ObjectData[];
   hideAll: () => void;
+  doorsAndWires: ObjectData[];
 }
 
 export interface ContextMenuItemClickProps {
   coordinate: CellCoordinate;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
+  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | null) => void;
 }
 
 export interface GridObjectProps {

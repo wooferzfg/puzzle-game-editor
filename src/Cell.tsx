@@ -3,7 +3,7 @@ import React from 'react';
 import { useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 import { CellContextMenu } from './CellContextMenu';
-import { ContextMenuItemClickProps, CellProps, CellType } from './types';
+import { ContextMenuItemClickProps, CellProps, CellType, ObjectData } from './types';
 import { GridObject } from './GridObject';
 import { Tooltip } from './Tooltip';
 
@@ -15,6 +15,8 @@ export function Cell({
   onMouseEnter,
   onRemoveObject,
   onSetRotation,
+  onConnect,
+  doorsAndWires,
 }: CellProps) {
   const menuId = `${row}-${column}`;
   const { show, hideAll } = useContextMenu({ id: menuId });
@@ -29,6 +31,7 @@ export function Cell({
       coordinate: { row, column },
       onRemoveObject,
       onSetRotation,
+      onConnect,
     };
     show({
       event,
@@ -48,7 +51,11 @@ export function Cell({
     }
   };
 
-  const objectIdsTooltip = _.isEmpty(objects) ? null : objects.map((object) => <div>{object.id}</div>);
+  const getTooltipText = (object: ObjectData) => {
+    const connectedObjectText = object.connectedObjectId ? `=> ${object.connectedObjectId}` : '';
+    return `${object.id} ${connectedObjectText}`;
+  }
+  const objectIdsTooltip = _.isEmpty(objects) ? null : objects.map((object) => <div>{getTooltipText(object)}</div>);
 
   return (
     <Tooltip tooltipContent={objectIdsTooltip}>
@@ -64,7 +71,12 @@ export function Cell({
           {objects.map((objectData) => (
             <GridObject key={objectData.type} objectData={objectData} />
           ))}
-          <CellContextMenu menuId={menuId} objects={objects} hideAll={hideAll} />
+          <CellContextMenu
+            menuId={menuId}
+            objects={objects}
+            hideAll={hideAll}
+            doorsAndWires={doorsAndWires}
+          />
       </div>
     </Tooltip>
   );

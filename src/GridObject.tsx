@@ -8,6 +8,8 @@ import platformImage from './images/platform.png';
 import podiumImage from './images/podium.png';
 import arrowBlockImage from './images/arrow_block.png';
 import arrowButtonImage from './images/arrow_button.png';
+import andWireImage from './images/and_wire.png';
+import orWireImage from './images/or_wire.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
   const { type, rotationDirection } = objectData;
@@ -36,6 +38,12 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Arrow Button') {
       return arrowButtonImage;
+    }
+    if (type === 'And Wire') {
+      return andWireImage;
+    }
+    if (type === 'Or Wire') {
+      return orWireImage;
     }
     throw new Error(`No image for grid object: ${type}`);
   };

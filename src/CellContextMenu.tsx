@@ -1,8 +1,9 @@
+import _ from 'lodash';
 import { ReactNode } from 'react';
-import { Menu, Item, Separator } from 'react-contexify';
-import { CellContextMenuProps, ContextMenuItemClickProps, ObjectType, RotationDirection } from './types';
+import { Menu, Item, Separator, Submenu } from 'react-contexify';
+import { CellContextMenuProps, ContextMenuItemClickProps, rotatableObjectTypes, RotationDirection, switchTypes, wireTypes } from './types';
 
-export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuProps) {
+export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: CellContextMenuProps) {
   const menuItems: ReactNode[] = [];
 
   objects.forEach((gridObject, index) => {
@@ -24,7 +25,6 @@ export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuPro
       </Item>
     );
 
-    const rotatableObjectTypes: ObjectType[] = ['Arrow Block', 'Arrow Button'];
     if (rotatableObjectTypes.includes(gridObject.type)) {
       const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
 
@@ -43,6 +43,54 @@ export function CellContextMenu({ menuId, objects, hideAll }: CellContextMenuPro
           </Item>
         );
       })
+    }
+
+    if (switchTypes.includes(gridObject.type) || wireTypes.includes(gridObject.type)) {
+      const subMenuItems: ReactNode[] = [];
+
+      doorsAndWires.forEach((doorOrWire) => {
+        if (doorOrWire.id === gridObject.id || doorOrWire.connectedObjectId === gridObject.id) {
+          return;
+        }
+
+        subMenuItems.push(
+          <Item
+            key={gridObject.type}
+            onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+              const { coordinate: { row, column }, onConnect } = props!;
+              onConnect({ row, column }, gridObject.id, doorOrWire.id);
+              hideAll();
+            }}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            {doorOrWire.id}
+          </Item>
+        );
+      });
+
+      if (!_.isEmpty(subMenuItems)) {
+        menuItems.push(
+          <Submenu label={`${gridObject.type}: Connect to...`}>
+            {subMenuItems}
+          </Submenu>
+        );
+      }
+
+      if (gridObject.connectedObjectId) {
+        menuItems.push(
+          <Item
+            key={gridObject.type}
+            onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+              const { coordinate: { row, column }, onConnect } = props!;
+              onConnect({ row, column }, gridObject.id, null);
+              hideAll();
+            }}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            {gridObject.type}: Disconnect
+          </Item>
+        );
+      }
     }
   });
 
