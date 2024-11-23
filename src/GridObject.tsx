@@ -13,7 +13,7 @@ import andWireImage from './images/and_wire.png';
 import orWireImage from './images/or_wire.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
-  const { type, rotationDirection } = objectData;
+  const { type, rotationDirection, isToggle } = objectData;
 
   const getImageForObject = () => {
     if (type === 'Conveyor') {
@@ -53,7 +53,7 @@ export function GridObject({ objectData }: GridObjectProps) {
   };
 
   return (
-    <div className={`grid-object ${rotationDirection}`} key={type}>
+    <div className={`grid-object ${rotationDirection ?? ''} ${isToggle ? 'toggle' : ''}`} key={type}>
       <img alt={type} src={getImageForObject()} />
       <div className="highlight-box" />
     </div>

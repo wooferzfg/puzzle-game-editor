@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ReactNode } from 'react';
 import { Menu, Item, Separator, Submenu } from 'react-contexify';
-import { CellContextMenuProps, ContextMenuItemClickProps, rotatableObjectTypes, RotationDirection, switchTypes, wireTypes } from './types';
+import { CellContextMenuProps, ContextMenuItemClickProps, doorTypes, rotatableObjectTypes, RotationDirection, switchTypes, wireTypes } from './types';
 
 export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: CellContextMenuProps) {
   const menuItems: ReactNode[] = [];
@@ -24,6 +24,22 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
         Remove {gridObject.type}
       </Item>
     );
+
+    if (doorTypes.includes(gridObject.type)) {
+      menuItems.push(
+        <Item
+          key={gridObject.type}
+          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+            const { coordinate: { row, column }, onSetToggle } = props!;
+            onSetToggle({ row, column }, gridObject.id, !gridObject.isToggle);
+            hideAll();
+          }}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          {gridObject.type}: {gridObject.isToggle ? 'Disable' : 'Enable'} toggle
+        </Item>
+      );
+    }
 
     if (rotatableObjectTypes.includes(gridObject.type)) {
       const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];

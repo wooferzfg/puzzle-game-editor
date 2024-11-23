@@ -16,6 +16,7 @@ export function Cell({
   onMouseEnter,
   onRemoveObject,
   onSetRotation,
+  onSetToggle,
   onConnect,
   doorsAndWires,
 }: CellProps) {
@@ -32,6 +33,7 @@ export function Cell({
       coordinate: { row, column },
       onRemoveObject,
       onSetRotation,
+      onSetToggle,
       onConnect,
     };
     show({

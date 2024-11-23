@@ -67,6 +67,10 @@ code {
   transform: rotate(270deg);
 }
 
+.grid-object.toggle img {
+  filter: invert(100%);
+}
+
 .sidebar {
   height: calc(100vh - 20px);
   width: 200px;

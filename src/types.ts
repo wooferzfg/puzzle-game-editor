@@ -18,6 +18,7 @@ export interface ObjectData {
   id: string;
   rotationDirection?: RotationDirection;
   connectedObjectId?: string;
+  isToggle?: boolean;
 }
 
 export interface ObjectWithCoordinate {
@@ -46,6 +47,7 @@ export interface CellProps {
   onMouseEnter: () => void;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
+  onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | undefined) => void;
   doorsAndWires: ObjectWithCoordinate[];
 }
@@ -61,6 +63,7 @@ export interface ContextMenuItemClickProps {
   coordinate: CellCoordinate;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
+  onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | undefined) => void;
 }
 

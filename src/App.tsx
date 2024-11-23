@@ -75,6 +75,7 @@ function App() {
       newGrid[row][column].objects.push({
         type: objectType,
         rotationDirection: rotatableObjectTypes.includes(objectType) ? 'up' : undefined,
+        isToggle: doorTypes.includes(objectType) ? false : undefined,
         id: generateId(objectType),
         connectedObjectId: undefined,
       });
@@ -206,6 +207,16 @@ function App() {
     updateGrid(newGrid);
   };
 
+  const handleSetToggle = ({ row, column }: CellCoordinate, idToUpdate: string, isToggle: boolean) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.isToggle = isToggle;
+
+    updateGrid(newGrid);
+  };
+
   const handleConnect = ({ row, column }: CellCoordinate, idToUpdate: string, otherObjectId: string | undefined) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
@@ -329,6 +340,7 @@ function App() {
                 onMouseEnter={() => handleMouseEnter(row, column)}
                 onRemoveObject={handleRemoveObject}
                 onSetRotation={handleSetRotation}
+                onSetToggle={handleSetToggle}
                 onConnect={handleConnect}
                 doorsAndWires={doorAndWireObjects}
               />
