@@ -1,5 +1,6 @@
 import { GridObjectProps } from "./types";
 
+import conveyorImage from './images/conveyor.png';
 import boxImage from './images/block.png';
 import playerImage from './images/player.png';
 import doorImage from './images/door.png';
@@ -15,6 +16,9 @@ export function GridObject({ objectData }: GridObjectProps) {
   const { type, rotationDirection } = objectData;
 
   const getImageForObject = () => {
+    if (type === 'Conveyor') {
+      return conveyorImage;
+    }
     if (type === 'Box') {
       return boxImage;
     }
