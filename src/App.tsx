@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
-import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, RotationDirection, wireTypes } from './types';
+import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, wireTypes } from './types';
 import { exportFile, loadFile } from './Storage';
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
           }
           const connectedObject = gridObjects[object.connectedObjectId];
           if (!connectedObject) {
-            object.connectedObjectId = null;
+            object.connectedObjectId = undefined;
           }
         });
       }
@@ -74,9 +74,9 @@ function App() {
       const objectType = selectedButton as ObjectType;
       newGrid[row][column].objects.push({
         type: objectType,
-        rotationDirection: 'up',
+        rotationDirection: rotatableObjectTypes.includes(objectType) ? 'up' : undefined,
         id: generateId(objectType),
-        connectedObjectId: null,
+        connectedObjectId: undefined,
       });
     }
     updateGrid(newGrid);
@@ -206,7 +206,7 @@ function App() {
     updateGrid(newGrid);
   };
 
-  const handleConnect = ({ row, column }: CellCoordinate, idToUpdate: string, otherObjectId: string | null) => {
+  const handleConnect = ({ row, column }: CellCoordinate, idToUpdate: string, otherObjectId: string | undefined) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
 
@@ -219,7 +219,7 @@ function App() {
       if (doorTypes.includes(otherObject!.object.type)) {
         _.values(allObjects).forEach((object) => {
           if (object.object.connectedObjectId === otherObjectId) {
-            object.object.connectedObjectId = null;
+            object.object.connectedObjectId = undefined;
           }
         })
       }

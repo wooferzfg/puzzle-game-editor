@@ -82,7 +82,7 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
             key={gridObject.type}
             onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
               const { coordinate: { row, column }, onConnect } = props!;
-              onConnect({ row, column }, gridObject.id, null);
+              onConnect({ row, column }, gridObject.id, undefined);
               hideAll();
             }}
             onMouseDown={(event) => event.stopPropagation()}

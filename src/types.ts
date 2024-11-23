@@ -15,9 +15,9 @@ export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', '
 
 export interface ObjectData {
   type: ObjectType;
-  rotationDirection: RotationDirection;
   id: string;
-  connectedObjectId: string | null;
+  rotationDirection?: RotationDirection;
+  connectedObjectId?: string;
 }
 
 export interface ObjectWithCoordinate {
@@ -46,7 +46,7 @@ export interface CellProps {
   onMouseEnter: () => void;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
-  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | null) => void;
+  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | undefined) => void;
   doorsAndWires: ObjectWithCoordinate[];
 }
 
@@ -61,7 +61,7 @@ export interface ContextMenuItemClickProps {
   coordinate: CellCoordinate;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
-  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | null) => void;
+  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | undefined) => void;
 }
 
 export interface GridObjectProps {
