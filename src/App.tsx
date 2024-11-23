@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
-import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, wireTypes } from './types';
+import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes } from './types';
 import { exportFile, loadFile } from './Storage';
 
 function App() {
@@ -30,13 +30,12 @@ function App() {
     for (let row = 0; row < newGrid.length; row += 1) {
       for (let column = 0; column < newGrid[row].length; column += 1) {
         newGrid[row][column].objects.forEach((object) => {
-          if (!object.connectedObjectId) {
+          if (_.isNil(object.connectedObjectIds)) {
             return;
           }
-          const connectedObject = gridObjects[object.connectedObjectId];
-          if (!connectedObject) {
-            object.connectedObjectId = undefined;
-          }
+          object.connectedObjectIds = _.filter(object.connectedObjectIds, (objectId) => (
+            !_.isNil(gridObjects[objectId])
+          ));
         });
       }
     }
@@ -77,7 +76,7 @@ function App() {
         rotationDirection: rotatableObjectTypes.includes(objectType) ? 'up' : undefined,
         isToggle: doorTypes.includes(objectType) ? false : undefined,
         id: generateId(objectType),
-        connectedObjectId: undefined,
+        connectedObjectIds: switchAndWireTypes.includes(objectType) ? [] : undefined,
       });
     }
     updateGrid(newGrid);
@@ -107,13 +106,17 @@ function App() {
   const updateHighlightedCells = (row: number, column: number) => {
     const newHighlightedCells: CellCoordinate[] = [];
     grid[row][column].objects.forEach((gridObject) => {
-      if (gridObject.connectedObjectId) {
-        const connectedObject = doorAndWireObjects.find((doorOrWire) => doorOrWire.object.id === gridObject.connectedObjectId);
-        newHighlightedCells.push(connectedObject!.coordinate);
+      if (!_.isNil(gridObject.connectedObjectIds)) {
+        const connectedObjects: ObjectWithCoordinate[] = _.filter(
+          doorAndWireObjects,
+          (doorOrWire) => gridObject.connectedObjectIds?.includes(doorOrWire.object.id) ?? false,
+        );
+        const coordinates = _.map(connectedObjects, (connectedObject) => connectedObject.coordinate);
+        newHighlightedCells.push(...coordinates);
       }
 
       _.values(allObjects).forEach((otherObject) => {
-        if (otherObject.object.connectedObjectId === gridObject.id) {
+        if (otherObject.object.connectedObjectIds?.includes(gridObject.id)) {
           newHighlightedCells.push(otherObject.coordinate);
         }
       })
@@ -217,26 +220,35 @@ function App() {
     updateGrid(newGrid);
   };
 
-  const handleConnect = ({ row, column }: CellCoordinate, idToUpdate: string, otherObjectId: string | undefined) => {
+  const handleConnect = ({ row, column }: CellCoordinate, idToUpdate: string, otherObjectId: string) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
 
-    if (otherObjectId) {
-      const allObjects = getGridObjects(newGrid);
-      const otherObject = allObjects[otherObjectId];
+    const allObjects = getGridObjects(newGrid);
+    const otherObject = allObjects[otherObjectId];
 
-      if (doorTypes.includes(otherObject!.object.type)) {
-        _.values(allObjects).forEach((object) => {
-          if (object.object.connectedObjectId === otherObjectId) {
-            object.object.connectedObjectId = undefined;
-          }
-        })
-      }
+    if (doorTypes.includes(otherObject!.object.type)) {
+      _.values(allObjects).forEach((object) => {
+        if (_.isNil(object.object.connectedObjectIds)) {
+          return;
+        }
+        object.object.connectedObjectIds = _.without(object.object.connectedObjectIds, otherObjectId);
+      })
     }
 
-    objectToUpdate!.connectedObjectId = otherObjectId;
+    objectToUpdate!.connectedObjectIds!.push(otherObjectId);
+
+    updateGrid(newGrid);
+  };
+
+  const handleDisconnect = ({ row, column }: CellCoordinate, idToUpdate: string, otherObjectId: string) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.connectedObjectIds = _.without(objectToUpdate!.connectedObjectIds, otherObjectId);
 
     updateGrid(newGrid);
   };
@@ -342,6 +354,7 @@ function App() {
                 onSetRotation={handleSetRotation}
                 onSetToggle={handleSetToggle}
                 onConnect={handleConnect}
+                onDisconnect={handleDisconnect}
                 doorsAndWires={doorAndWireObjects}
               />
             ))}

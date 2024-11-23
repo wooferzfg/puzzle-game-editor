@@ -18,6 +18,7 @@ export function Cell({
   onSetRotation,
   onSetToggle,
   onConnect,
+  onDisconnect,
   doorsAndWires,
 }: CellProps) {
   const menuId = `${row}-${column}`;
@@ -35,6 +36,7 @@ export function Cell({
       onSetRotation,
       onSetToggle,
       onConnect,
+      onDisconnect,
     };
     show({
       event,
@@ -55,7 +57,11 @@ export function Cell({
   };
 
   const getTooltipText = (object: ObjectData) => {
-    const connectedObjectText = object.connectedObjectId ? `=> ${object.connectedObjectId}` : '';
+    const connectedObjectText = (
+      _.isNil(object.connectedObjectIds) || _.isEmpty(object.connectedObjectIds)
+      ? ''
+      : `=> ${object.connectedObjectIds.join(', ')}`
+    );
     return `${object.id} ${connectedObjectText}`;
   }
   const objectIdsTooltip = _.isEmpty(objects) ? null : objects.map((object) => <div>{getTooltipText(object)}</div>);

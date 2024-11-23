@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { ReactNode } from "react";
 
 export type CellType = 'Wall' | 'Floor' | 'Void';
@@ -7,6 +8,7 @@ export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Door' | 'Button' | 'Pl
 export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Player', 'Door', 'Button', 'Platform', 'Podium', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire'];
+export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
 export const doorTypes: ObjectType[] = ['Door', 'Platform'];
 export const rotatableObjectTypes: ObjectType[] = ['Conveyor', 'Arrow Block', 'Arrow Button'];
 
@@ -17,7 +19,7 @@ export interface ObjectData {
   type: ObjectType;
   id: string;
   rotationDirection?: RotationDirection;
-  connectedObjectId?: string;
+  connectedObjectIds?: string[];
   isToggle?: boolean;
 }
 
@@ -48,7 +50,8 @@ export interface CellProps {
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
   onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
-  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | undefined) => void;
+  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
+  onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   doorsAndWires: ObjectWithCoordinate[];
 }
 
@@ -64,7 +67,8 @@ export interface ContextMenuItemClickProps {
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
   onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
-  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string | undefined) => void;
+  onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
+  onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
 }
 
 export interface GridObjectProps {
