@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
 import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, RotationDirection, wireTypes } from './types';
-import { exportFile } from './Storage';
+import { exportFile, loadFile } from './Storage';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -238,6 +238,14 @@ function App() {
     }
   }
 
+  const loadLevelFromFile = async () => {
+    const levelJson = await loadFile();
+    const levelParsed = JSON.parse(levelJson);
+    setGrid(levelParsed);
+    setGridStack([]);
+    toast.success('Loaded level from JSON');
+  };
+
   const allButtons: (CellType | ObjectType)[] = _.concat(cellTypes, objectTypes);
 
   const getGridObjects = (currentGrid: GridState) => {
@@ -299,6 +307,9 @@ function App() {
           </div>
           <div className="config-buttons-row">
             <button onClick={() => exportFile(stringGridState, 'level.json')}>Save to File</button>
+          </div>
+          <div className="config-buttons-row">
+            <button onClick={loadLevelFromFile}>Load from File</button>
           </div>
         </div>
       </div>
