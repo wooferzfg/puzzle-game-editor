@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
 import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, RotationDirection, wireTypes } from './types';
+import { exportFile } from './Storage';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
@@ -295,6 +296,9 @@ function App() {
             <CopyToClipboard text={stringGridState} onCopy={(text, result) => notifyCopy(result)}>
               <button>Save to Clipboard</button>
             </CopyToClipboard>
+          </div>
+          <div className="config-buttons-row">
+            <button onClick={() => exportFile(stringGridState, 'level.json')}>Save to File</button>
           </div>
         </div>
       </div>
