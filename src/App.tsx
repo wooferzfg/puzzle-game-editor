@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import _ from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
 import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, RotationDirection, wireTypes } from './types';
 
@@ -91,7 +94,7 @@ function App() {
 
   const generateId = (objectType: ObjectType) => {
     const objectName = _.kebabCase(objectType);
-    for (let i = 1; ; i+= 1) {
+    for (let i = 1; ; i += 1) {
       const objectId = `${objectName}-${i}`;
       if (!idAlreadyExists(objectId)) {
         return objectId;
@@ -226,10 +229,18 @@ function App() {
     updateGrid(newGrid);
   };
 
+  const notifyCopy = (result: boolean) => {
+    if (result) {
+      toast.success('Copied to clipboard');
+    } else {
+      toast.error('Could not copy to clipboard');
+    }
+  }
+
   const allButtons: (CellType | ObjectType)[] = _.concat(cellTypes, objectTypes);
 
   const getGridObjects = (currentGrid: GridState) => {
-    const objects: {[key: string]: ObjectWithCoordinate} = {};
+    const objects: { [key: string]: ObjectWithCoordinate } = {};
     for (let row = 0; row < currentGrid.length; row += 1) {
       for (let column = 0; column < currentGrid[row].length; column += 1) {
         currentGrid[row][column].objects.forEach((object) => {
@@ -239,11 +250,14 @@ function App() {
     }
     return objects;
   };
-  const allObjects: {[key: string]: ObjectWithCoordinate} = getGridObjects(grid);
+  const allObjects: { [key: string]: ObjectWithCoordinate } = getGridObjects(grid);
   const doorAndWireObjects: ObjectWithCoordinate[] = _.filter(allObjects, (object) => doorTypes.includes(object.object.type) || wireTypes.includes(object.object.type));
+
+  const stringGridState = useMemo(() => JSON.stringify(grid), [grid]);
 
   return (
     <div className="main-container" onMouseUp={handleMouseUp}>
+      <ToastContainer />
       <div className="sidebar">
         {allButtons.map((button) => (
           <button
@@ -275,7 +289,12 @@ function App() {
             <button onClick={() => removeColumn('right')}>- Right</button>
           </div>
           <div className="config-buttons-row">
-            <button disabled={_.isEmpty(gridStack)} onClick={() => undoLastMove()}>Undo</button>
+            <button disabled={_.isEmpty(gridStack)} onClick={undoLastMove}>Undo</button>
+          </div>
+          <div className="config-buttons-row">
+            <CopyToClipboard text={stringGridState} onCopy={(text, result) => notifyCopy(result)}>
+              <button>Save to Clipboard</button>
+            </CopyToClipboard>
           </div>
         </div>
       </div>
