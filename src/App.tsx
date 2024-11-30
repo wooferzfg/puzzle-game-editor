@@ -291,17 +291,21 @@ function App() {
     <div className="main-container" onMouseUp={handleMouseUp}>
       <ToastContainer />
       <div className="sidebar">
-        {allButtons.map((button) => (
-          <button
-            key={button}
-            onClick={() => setSelectedButton(button as CellType | ObjectType)}
-            style={{
-              backgroundColor:
-                selectedButton === button ? 'lightblue' : 'white',
-            }}
-          >
-            {button}
-          </button>
+        {_.chunk(allButtons, 2).map((buttonsChunk, index) => (
+          <div className="sidebar-row" key={index}>
+            {buttonsChunk.map((button) => (
+              <button
+                key={button}
+                onClick={() => setSelectedButton(button as CellType | ObjectType)}
+                style={{
+                  backgroundColor:
+                    selectedButton === button ? 'lightblue' : 'white',
+                }}
+              >
+                {button}
+              </button>
+            ))}
+          </div>
         ))}
         <div className="config-buttons">
           <div className="config-buttons-row">

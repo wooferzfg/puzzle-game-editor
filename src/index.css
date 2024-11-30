@@ -102,7 +102,7 @@ code {
   flex-grow: 1;
 }
 
-.config-buttons-row {
+.config-buttons-row, .sidebar-row {
   display: flex;
   gap: 10px;
 }
