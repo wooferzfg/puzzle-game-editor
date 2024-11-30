@@ -4,10 +4,10 @@ import { ReactNode } from "react";
 export type CellType = 'Wall' | 'Floor' | 'Void';
 export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void'];
 
-export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire';
-export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Player', 'Door', 'Button', 'Platform', 'Podium', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire'];
+export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire';
+export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Player', 'Door', 'Button', 'Platform', 'Podium', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button'];
-export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire'];
+export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
 export const doorTypes: ObjectType[] = ['Door', 'Platform'];
 export const rotatableObjectTypes: ObjectType[] = ['Conveyor', 'Arrow Block', 'Arrow Button'];

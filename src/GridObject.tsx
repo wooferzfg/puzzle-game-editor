@@ -11,6 +11,7 @@ import arrowBlockImage from './images/arrow_block.png';
 import arrowButtonImage from './images/arrow_button.png';
 import andWireImage from './images/and_wire.png';
 import orWireImage from './images/or_wire.png';
+import notWireImage from './images/not_wire.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
   const { type, rotationDirection, isToggle } = objectData;
@@ -48,6 +49,9 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Or Wire') {
       return orWireImage;
+    }
+    if (type === 'Not Wire') {
+      return notWireImage;
     }
     throw new Error(`No image for grid object: ${type}`);
   };
