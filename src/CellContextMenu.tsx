@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ReactNode } from 'react';
 import { Menu, Item, Separator, Submenu } from 'react-contexify';
-import { CellContextMenuProps, ContextMenuItemClickProps, doorTypes, rotatableObjectTypes, RotationDirection, switchAndWireTypes } from './types';
+import { CellContextMenuProps, ContextMenuItemClickProps, diagonalObjectTypes, doorTypes, laserColoredObjectTypes, rotatableObjectTypes, switchAndWireTypes, rotationDirections } from './types';
 
 export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: CellContextMenuProps) {
   const menuItems: ReactNode[] = [];
@@ -36,14 +36,12 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
           }}
           onMouseDown={(event) => event.stopPropagation()}
         >
-          {gridObject.type}: {gridObject.isToggle ? 'Disable' : 'Enable'} toggle
+          {gridObject.type}: {gridObject.isToggle ? 'disable' : 'enable'} toggle
         </Item>
       );
     }
 
     if (rotatableObjectTypes.includes(gridObject.type)) {
-      const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
-
       rotationDirections.forEach((direction) => {
         menuItems.push(
           <Item
@@ -59,6 +57,39 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
           </Item>
         );
       })
+    }
+
+    if (diagonalObjectTypes.includes(gridObject.type)) {
+      menuItems.push(
+        <Item
+          key={gridObject.type}
+          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+            const { coordinate: { row, column }, onSetDiagonal } = props!;
+            onSetDiagonal({ row, column }, gridObject.id, !gridObject.isDiagonal);
+            hideAll();
+          }}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          {gridObject.type}: {gridObject.isDiagonal ? 'change to orthogonal' : 'change to diagonal'}
+        </Item>
+      );
+    }
+
+    if (laserColoredObjectTypes.includes(gridObject.type)) {
+      const newLaserColor = gridObject.laserColor === 'red' ? 'blue' : 'red';
+      menuItems.push(
+        <Item
+          key={gridObject.type}
+          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+            const { coordinate: { row, column }, onSetLaserColor } = props!;
+            onSetLaserColor({ row, column }, gridObject.id, newLaserColor);
+            hideAll();
+          }}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          {gridObject.type} laser color: {newLaserColor}
+        </Item>
+      );
     }
 
     if (switchAndWireTypes.includes(gridObject.type)) {

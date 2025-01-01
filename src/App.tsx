@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
-import { CellCoordinate, CellState, CellType, cellTypes, doorTypes, GridState, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes } from './types';
+import { CellCoordinate, CellState, CellType, cellTypes, diagonalObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes } from './types';
 import { exportFile, loadFile } from './Storage';
 
 function App() {
@@ -77,6 +77,8 @@ function App() {
         isToggle: doorTypes.includes(objectType) ? false : undefined,
         id: generateId(objectType),
         connectedObjectIds: switchAndWireTypes.includes(objectType) ? [] : undefined,
+        isDiagonal: diagonalObjectTypes.includes(objectType) ? false : undefined,
+        laserColor: laserColoredObjectTypes.includes(objectType) ? 'red' : undefined,
       });
     }
     updateGrid(newGrid);
@@ -220,6 +222,26 @@ function App() {
     updateGrid(newGrid);
   };
 
+  const handleSetDiagonal = ({ row, column }: CellCoordinate, idToUpdate: string, isDiagonal: boolean) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.isDiagonal = isDiagonal;
+
+    updateGrid(newGrid);
+  };
+
+  const handleSetLaserColor = ({ row, column }: CellCoordinate, idToUpdate: string, laserColor: LaserColor) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.laserColor = laserColor;
+
+    updateGrid(newGrid);
+  };
+
   const handleConnect = ({ row, column }: CellCoordinate, idToUpdate: string, otherObjectId: string) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
@@ -357,6 +379,8 @@ function App() {
                 onRemoveObject={handleRemoveObject}
                 onSetRotation={handleSetRotation}
                 onSetToggle={handleSetToggle}
+                onSetDiagonal={handleSetDiagonal}
+                onSetLaserColor={handleSetLaserColor}
                 onConnect={handleConnect}
                 onDisconnect={handleDisconnect}
                 doorsAndWires={doorAndWireObjects}

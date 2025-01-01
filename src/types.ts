@@ -4,16 +4,20 @@ import { ReactNode } from "react";
 export type CellType = 'Wall' | 'Floor' | 'Void';
 export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void'];
 
-export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire';
-export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Podium', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Player'];
+export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Podium' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter';
+export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Podium', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Player', 'Emitter'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
 export const doorTypes: ObjectType[] = ['Door', 'Platform'];
-export const rotatableObjectTypes: ObjectType[] = ['Conveyor', 'Arrow Block', 'Arrow Button'];
+export const rotatableObjectTypes: ObjectType[] = ['Conveyor', 'Arrow Block', 'Arrow Button', 'Emitter'];
+export const laserColoredObjectTypes: ObjectType[] = ['Emitter'];
+export const diagonalObjectTypes: ObjectType[] = ['Emitter'];
 
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
+
+export type LaserColor = 'red' | 'blue';
 
 export interface ObjectData {
   type: ObjectType;
@@ -21,6 +25,8 @@ export interface ObjectData {
   rotationDirection?: RotationDirection;
   connectedObjectIds?: string[];
   isToggle?: boolean;
+  isDiagonal?: boolean;
+  laserColor?: LaserColor;
 }
 
 export interface ObjectWithCoordinate {
@@ -50,6 +56,8 @@ export interface CellProps {
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
   onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
+  onSetDiagonal: (coordinate: CellCoordinate, id: string, isDiagonal: boolean) => void;
+  onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   doorsAndWires: ObjectWithCoordinate[];
@@ -67,6 +75,8 @@ export interface ContextMenuItemClickProps {
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
   onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
+  onSetDiagonal: (coordinate: CellCoordinate, id: string, isDiagonal: boolean) => void;
+  onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
 }

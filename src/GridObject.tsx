@@ -12,9 +12,13 @@ import arrowButtonImage from './images/arrow_button.png';
 import andWireImage from './images/and_wire.png';
 import orWireImage from './images/or_wire.png';
 import notWireImage from './images/not_wire.png';
+import laserEmitterDiagonalBlue from './images/laser_emitter_diagonal_blue.png';
+import laserEmitterDiagonalRed from './images/laser_emitter_diagonal_red.png';
+import laserEmitterOrthogonalBlue from './images/laser_emitter_orthogonal_blue.png';
+import laserEmitterOrthogonalRed from './images/laser_emitter_orthogonal_red.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
-  const { type, rotationDirection, isToggle } = objectData;
+  const { type, rotationDirection, isToggle, isDiagonal, laserColor } = objectData;
 
   const getImageForObject = () => {
     if (type === 'Conveyor') {
@@ -52,6 +56,22 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Not Wire') {
       return notWireImage;
+    }
+    if (type === 'Emitter') {
+      if (isDiagonal) {
+        if (laserColor === 'blue') {
+          return laserEmitterDiagonalBlue;
+        }
+        if (laserColor === 'red') {
+          return laserEmitterDiagonalRed;
+        }
+      }
+      if (laserColor === 'blue') {
+        return laserEmitterOrthogonalBlue;
+      }
+      if (laserColor === 'red') {
+        return laserEmitterOrthogonalRed;
+      }
     }
     throw new Error(`No image for grid object: ${type}`);
   };

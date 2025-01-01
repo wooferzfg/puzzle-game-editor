@@ -17,6 +17,8 @@ export function Cell({
   onRemoveObject,
   onSetRotation,
   onSetToggle,
+  onSetDiagonal,
+  onSetLaserColor,
   onConnect,
   onDisconnect,
   doorsAndWires,
@@ -35,6 +37,8 @@ export function Cell({
       onRemoveObject,
       onSetRotation,
       onSetToggle,
+      onSetDiagonal,
+      onSetLaserColor,
       onConnect,
       onDisconnect,
     };
