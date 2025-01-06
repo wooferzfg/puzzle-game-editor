@@ -16,6 +16,8 @@ import laserEmitterDiagonalBlue from './images/laser_emitter_diagonal_blue.png';
 import laserEmitterDiagonalRed from './images/laser_emitter_diagonal_red.png';
 import laserEmitterOrthogonalBlue from './images/laser_emitter_orthogonal_blue.png';
 import laserEmitterOrthogonalRed from './images/laser_emitter_orthogonal_red.png';
+import reflectorDiagonal from './images/reflector_diagonal.png';
+import reflectorOrthogonal from './images/reflector_orthogonal.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
   const { type, rotationDirection, isToggle, isDiagonal, laserColor } = objectData;
@@ -72,6 +74,12 @@ export function GridObject({ objectData }: GridObjectProps) {
       if (laserColor === 'red') {
         return laserEmitterOrthogonalRed;
       }
+    }
+    if (type === 'Reflector') {
+      if (isDiagonal) {
+        return reflectorDiagonal;
+      }
+      return reflectorOrthogonal;
     }
     throw new Error(`No image for grid object: ${type}`);
   };
