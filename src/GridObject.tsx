@@ -18,9 +18,15 @@ import laserEmitterOrthogonalBlue from './images/laser_emitter_orthogonal_blue.p
 import laserEmitterOrthogonalRed from './images/laser_emitter_orthogonal_red.png';
 import reflectorDiagonal from './images/reflector_diagonal.png';
 import reflectorOrthogonal from './images/reflector_orthogonal.png';
+import immovableLaserEmitterDiagonalBlue from './images/immovable_laser_emitter_diagonal_blue.png';
+import immovableLaserEmitterDiagonalRed from './images/immovable_laser_emitter_diagonal_red.png';
+import immovableLaserEmitterOrthogonalBlue from './images/immovable_laser_emitter_orthogonal_blue.png';
+import immovableLaserEmitterOrthogonalRed from './images/immovable_laser_emitter_orthogonal_red.png';
+import immovableReflectorDiagonal from './images/immovable_reflector_diagonal.png';
+import immovableReflectorOrthogonal from './images/immovable_reflector_orthogonal.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
-  const { type, rotationDirection, isToggle, isDiagonal, laserColor } = objectData;
+  const { type, rotationDirection, isToggle, isDiagonal, isImmovable, laserColor } = objectData;
 
   const getImageForObject = () => {
     if (type === 'Conveyor') {
@@ -58,6 +64,30 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Not Wire') {
       return notWireImage;
+    }
+    if (isImmovable) {
+      if (type === 'Emitter') {
+        if (isDiagonal) {
+          if (laserColor === 'blue') {
+            return immovableLaserEmitterDiagonalBlue;
+          }
+          if (laserColor === 'red') {
+            return immovableLaserEmitterDiagonalRed;
+          }
+        }
+        if (laserColor === 'blue') {
+          return immovableLaserEmitterOrthogonalBlue;
+        }
+        if (laserColor === 'red') {
+          return immovableLaserEmitterOrthogonalRed;
+        }
+      }
+      if (type === 'Reflector') {
+        if (isDiagonal) {
+          return immovableReflectorDiagonal;
+        }
+        return immovableReflectorOrthogonal;
+      }
     }
     if (type === 'Emitter') {
       if (isDiagonal) {
