@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ReactNode } from 'react';
 import { Menu, Item, Separator, Submenu } from 'react-contexify';
-import { CellContextMenuProps, ContextMenuItemClickProps, diagonalObjectTypes, doorTypes, laserColoredObjectTypes, rotatableObjectTypes, switchAndWireTypes, rotationDirections } from './types';
+import { CellContextMenuProps, ContextMenuItemClickProps, diagonalObjectTypes, immovableObjectTypes, doorTypes, laserColoredObjectTypes, rotatableObjectTypes, switchAndWireTypes, rotationDirections } from './types';
 
 export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: CellContextMenuProps) {
   const menuItems: ReactNode[] = [];
@@ -71,6 +71,22 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
           onMouseDown={(event) => event.stopPropagation()}
         >
           {gridObject.type}: {gridObject.isDiagonal ? 'change to orthogonal' : 'change to diagonal'}
+        </Item>
+      );
+    }
+
+    if (immovableObjectTypes.includes(gridObject.type)) {
+      menuItems.push(
+        <Item
+          key={gridObject.type}
+          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+            const { coordinate: { row, column }, onSetImmovable } = props!;
+            onSetImmovable({ row, column }, gridObject.id, !gridObject.isImmovable);
+            hideAll();
+          }}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          {gridObject.type}: {gridObject.isImmovable ? 'change to movable' : 'change to immovable'}
         </Item>
       );
     }

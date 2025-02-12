@@ -13,6 +13,7 @@ export const doorTypes: ObjectType[] = ['Door', 'Platform'];
 export const rotatableObjectTypes: ObjectType[] = ['Conveyor', 'Arrow Block', 'Arrow Button', 'Emitter', 'Reflector'];
 export const laserColoredObjectTypes: ObjectType[] = ['Emitter'];
 export const diagonalObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
+export const immovableObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
@@ -26,6 +27,7 @@ export interface ObjectData {
   connectedObjectIds?: string[];
   isToggle?: boolean;
   isDiagonal?: boolean;
+  isImmovable?: boolean;
   laserColor?: LaserColor;
 }
 
@@ -57,6 +59,7 @@ export interface CellProps {
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
   onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
   onSetDiagonal: (coordinate: CellCoordinate, id: string, isDiagonal: boolean) => void;
+  onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
@@ -76,6 +79,7 @@ export interface ContextMenuItemClickProps {
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
   onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
   onSetDiagonal: (coordinate: CellCoordinate, id: string, isDiagonal: boolean) => void;
+  onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
