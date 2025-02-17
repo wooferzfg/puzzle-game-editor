@@ -24,6 +24,7 @@ import immovableLaserEmitterOrthogonalBlue from './images/immovable_laser_emitte
 import immovableLaserEmitterOrthogonalRed from './images/immovable_laser_emitter_orthogonal_red.png';
 import immovableReflectorDiagonal from './images/immovable_reflector_diagonal.png';
 import immovableReflectorOrthogonal from './images/immovable_reflector_orthogonal.png';
+import goalImage from './imeages/goal_cell.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
   const { type, rotationDirection, isToggle, isDiagonal, isImmovable, laserColor } = objectData;
@@ -110,6 +111,9 @@ export function GridObject({ objectData }: GridObjectProps) {
         return reflectorDiagonal;
       }
       return reflectorOrthogonal;
+    }
+    if (type === 'Goal') {
+      return goalImage;
     }
     throw new Error(`No image for grid object: ${type}`);
   };
