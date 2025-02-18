@@ -4,14 +4,14 @@ import { ReactNode } from "react";
 export type CellType = 'Wall' | 'Floor' | 'Void';
 export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void'];
 
-export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Color Switcher' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Goal';
-export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Color Switcher', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Goal', 'Player'];
+export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Color Switcher' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal';
+export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Color Switcher', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Player'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
 export const doorTypes: ObjectType[] = ['Door', 'Platform'];
 export const rotatableObjectTypes: ObjectType[] = ['Conveyor', 'Arrow Block', 'Arrow Button', 'Emitter', 'Reflector'];
-export const laserColoredObjectTypes: ObjectType[] = ['Emitter'];
+export const laserColoredObjectTypes: ObjectType[] = ['Emitter', 'Receiver'];
 export const diagonalObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 export const immovableObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 

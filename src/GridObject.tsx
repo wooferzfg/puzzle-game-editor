@@ -24,6 +24,8 @@ import immovableLaserEmitterOrthogonalBlue from './images/immovable_laser_emitte
 import immovableLaserEmitterOrthogonalRed from './images/immovable_laser_emitter_orthogonal_red.png';
 import immovableReflectorDiagonal from './images/immovable_reflector_diagonal.png';
 import immovableReflectorOrthogonal from './images/immovable_reflector_orthogonal.png';
+import receiverBlue from './images/receiver_blue.png';
+import receiverRed from './images/receiver_red.png';
 import goalImage from './images/goal_cell.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
@@ -111,6 +113,14 @@ export function GridObject({ objectData }: GridObjectProps) {
         return reflectorDiagonal;
       }
       return reflectorOrthogonal;
+    }
+    if (type === 'Receiver') {
+      if (laserColor === 'blue') {
+        return receiverBlue;
+      }
+      if (laserColor === 'red') {
+        return receiverRed;
+      }
     }
     if (type === 'Goal') {
       return goalImage;
