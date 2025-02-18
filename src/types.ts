@@ -6,7 +6,7 @@ export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void'];
 
 export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Door' | 'Button' | 'Platform' | 'Color Switcher' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal';
 export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Color Switcher', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Player'];
-export const switchTypes: ObjectType[] = ['Button', 'Arrow Button'];
+export const switchTypes: ObjectType[] = ['Button', 'Arrow Button', 'Receiver'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
 export const doorTypes: ObjectType[] = ['Door', 'Platform'];
