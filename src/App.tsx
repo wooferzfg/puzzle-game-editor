@@ -14,8 +14,8 @@ function App() {
   );
   const [gridStack, setGridStack] = useState<GridState[]>([]);
   const [grid, setGrid] = useState<GridState>(
-    _.map(_.range(20), () =>
-      _.map(_.range(20), () => ({
+    _.map(_.range(10), () =>
+      _.map(_.range(10), () => ({
         cellType: 'Void' as CellType,
         objects: [] as ObjectData[],
       })),
