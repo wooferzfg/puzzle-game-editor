@@ -142,8 +142,10 @@ function App() {
     updateHighlightedCells(row, column);
   };
 
-  const handleMouseUp = () => {
-    setMouseDownOnCell(null);
+  const handleMouseUp = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (event.button === 0) { // Left mouse button
+      setMouseDownOnCell(null);
+    }
   };
 
   const addRow = (position: 'top' | 'bottom') => {
