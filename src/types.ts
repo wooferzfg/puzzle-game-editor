@@ -14,6 +14,8 @@ export const rotatableObjectTypes: ObjectType[] = ['Conveyor', 'Arrow Block', 'A
 export const laserColoredObjectTypes: ObjectType[] = ['Emitter', 'Receiver'];
 export const diagonalObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 export const immovableObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
+export type ActionType = 'Move Object';
+export const actionTypes: ActionType[] = ['Move Object'];
 
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];

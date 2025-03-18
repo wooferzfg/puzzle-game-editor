@@ -1,15 +1,15 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
-import { CellCoordinate, CellState, CellType, cellTypes, diagonalObjectTypes, immovableObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes } from './types';
+import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, diagonalObjectTypes, immovableObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes } from './types';
 import { exportFile, loadFile } from './Storage';
 
 function App() {
-  const [selectedButton, setSelectedButton] = useState<CellType | ObjectType>(
+  const [selectedButton, setSelectedButton] = useState<CellType | ObjectType | ActionType>(
     'Void',
   );
   const [gridStack, setGridStack] = useState<GridState[]>([]);
@@ -22,6 +22,8 @@ function App() {
     ),
   );
   const [mouseDownOnCell, setMouseDownOnCell] = useState<CellCoordinate | null>(null);
+  const [hoverCell, setHoverCell] = useState<CellCoordinate | null>(null);
+  const [objectIdsBeingMoved, setObjectIdsBeingMoved] = useState<string[]>([]);
   const [highlightedCells, setHighlightedCells] = useState<CellCoordinate[]>([]);
 
   const cleanConnections = (newGrid: GridState) => {
@@ -106,40 +108,27 @@ function App() {
     }
   };
 
-  const updateHighlightedCells = (row: number, column: number) => {
-    const newHighlightedCells: CellCoordinate[] = [];
-    grid[row][column].objects.forEach((gridObject) => {
-      if (!_.isNil(gridObject.connectedObjectIds)) {
-        const connectedObjects: ObjectWithCoordinate[] = _.filter(
-          doorAndWireObjects,
-          (doorOrWire) => gridObject.connectedObjectIds?.includes(doorOrWire.object.id) ?? false,
-        );
-        const coordinates = _.map(connectedObjects, (connectedObject) => connectedObject.coordinate);
-        newHighlightedCells.push(...coordinates);
-      }
-
-      _.values(allObjects).forEach((otherObject) => {
-        if (otherObject.object.connectedObjectIds?.includes(gridObject.id)) {
-          newHighlightedCells.push(otherObject.coordinate);
-        }
-      })
-    });
-    setHighlightedCells(newHighlightedCells);
-  };
-
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, row: number, column: number) => {
     if (event.button === 0) { // Left mouse button
       setMouseDownOnCell({ row, column });
-      handleCellUpdate(row, column);
+      if (selectedButton === 'Move Object') {
+        setObjectIdsBeingMoved(grid[row][column].objects.map((object) => object.id));
+      } else {
+        handleCellUpdate(row, column);
+      }
     }
   };
 
   const handleMouseEnter = (row: number, column: number) => {
     if (mouseDownOnCell && (mouseDownOnCell.row !== row || mouseDownOnCell.column !== column)) {
-      setMouseDownOnCell({ row, column });
-      handleCellUpdate(row, column);
+      if (selectedButton === 'Move Object') {
+        handleMoveObjects(objectIdsBeingMoved, mouseDownOnCell, { row, column });
+      } else {
+        handleCellUpdate(row, column);
+      }
+      setMouseDownOnCell({ row, column }); // Set mouseDownOnCell only after calling handleMoveObject because it uses mouseDownOnCell to determine where to move from
     }
-    updateHighlightedCells(row, column);
+    setHoverCell({ row, column });
   };
 
   const handleMouseUp = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -147,6 +136,10 @@ function App() {
       setMouseDownOnCell(null);
     }
   };
+
+  const handleMouseLeave = () => {
+    setHoverCell(null);
+  }
 
   const addRow = (position: 'top' | 'bottom') => {
     const newRow: CellState[] = Array.from(
@@ -202,6 +195,24 @@ function App() {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
     cell.objects = cell.objects.filter((cellObject) => cellObject.id !== idToRemove);
+    updateGrid(newGrid);
+  };
+
+  const handleMoveObjects = (
+    objectIdsBeingMoved: string[],
+    { row: previousRow, column: previousColumn }: CellCoordinate,
+    { row: newRow, column: newColumn }: CellCoordinate,
+  ) => {
+    const newGrid = _.cloneDeep(grid);
+
+    const previousCellObjects = newGrid[previousRow][previousColumn].objects;
+    const objectsToMove = previousCellObjects.filter((object) => objectIdsBeingMoved.includes(object.id));
+    const newCellObjects = newGrid[newRow][newColumn].objects;
+    const objectsToMoveTypes = objectsToMove.map((object) => object.type);
+
+    newGrid[previousRow][previousColumn].objects = previousCellObjects.filter((object) => !objectIdsBeingMoved.includes(object.id));
+    newGrid[newRow][newColumn].objects = newCellObjects.filter((object) => !objectsToMoveTypes.includes(object.type)).concat(objectsToMove);
+
     updateGrid(newGrid);
   };
 
@@ -261,11 +272,11 @@ function App() {
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
 
-    const allObjects = getGridObjects(newGrid);
-    const otherObject = allObjects[otherObjectId];
+    const allObjectsForConnect = getGridObjects(newGrid);
+    const otherObject = allObjectsForConnect[otherObjectId];
 
     if (doorTypes.includes(otherObject!.object.type)) {
-      _.values(allObjects).forEach((object) => {
+      _.values(allObjectsForConnect).forEach((object) => {
         if (_.isNil(object.object.connectedObjectIds)) {
           return;
         }
@@ -304,7 +315,7 @@ function App() {
     toast.success('Loaded level from JSON');
   };
 
-  const allButtons: (CellType | ObjectType)[] = _.concat(cellTypes, objectTypes);
+  const allButtons: (CellType | ObjectType | ActionType)[] = _.concat(cellTypes, objectTypes, actionTypes);
 
   const getGridObjects = (currentGrid: GridState) => {
     const objects: { [key: string]: ObjectWithCoordinate } = {};
@@ -322,6 +333,45 @@ function App() {
 
   const stringGridState = useMemo(() => JSON.stringify(grid), [grid]);
 
+  const getNewHighlightedCells = useCallback((
+    row: number,
+    column: number,
+    currentGrid: GridState,
+    currentDoorAndWireObjects: ObjectWithCoordinate[],
+    currentAllObjects: { [key: string]: ObjectWithCoordinate; },
+  ) => {
+    const newHighlightedCells: CellCoordinate[] = [];
+    currentGrid[row][column].objects.forEach((gridObject) => {
+      if (!_.isNil(gridObject.connectedObjectIds)) {
+        const connectedObjects: ObjectWithCoordinate[] = _.filter(
+          currentDoorAndWireObjects,
+          (doorOrWire) => gridObject.connectedObjectIds?.includes(doorOrWire.object.id) ?? false,
+        );
+        const coordinates = _.map(connectedObjects, (connectedObject) => connectedObject.coordinate);
+        newHighlightedCells.push(...coordinates);
+      }
+
+      _.values(currentAllObjects).forEach((otherObject) => {
+        if (otherObject.object.connectedObjectIds?.includes(gridObject.id)) {
+          newHighlightedCells.push(otherObject.coordinate);
+        }
+      })
+    });
+    return newHighlightedCells;
+  }, []);
+
+  useEffect(() => {
+    let newHighlightedCells: CellCoordinate[] = [];
+    if (hoverCell) {
+      const { row, column } = hoverCell;
+      newHighlightedCells = getNewHighlightedCells(row, column, grid, doorAndWireObjects, allObjects);
+    }
+
+    if (!_.isEqual(newHighlightedCells, highlightedCells)) {
+      setHighlightedCells(newHighlightedCells);
+    }
+  }, [grid, hoverCell, allObjects, doorAndWireObjects, highlightedCells, getNewHighlightedCells]);
+
   return (
     <div className="main-container" onMouseUp={handleMouseUp}>
       <ToastContainer />
@@ -331,7 +381,7 @@ function App() {
             {buttonsChunk.map((button) => (
               <button
                 key={button}
-                onClick={() => setSelectedButton(button as CellType | ObjectType)}
+                onClick={() => setSelectedButton(button)}
                 style={{
                   backgroundColor:
                     selectedButton === button ? 'lightblue' : 'white',
@@ -375,7 +425,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="grid">
+      <div className="grid" onMouseLeave={handleMouseLeave}>
         {_.map(_.range(grid.length), (row) => (
           <div className="grid-row" key={row}>
             {_.map(_.range(grid[row].length), (column) => (

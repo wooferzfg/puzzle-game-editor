@@ -15,7 +15,8 @@ code {
 .grid {
   user-select: none;
   cursor: pointer;
-  padding: 50px;
+  margin: 50px;
+  height: fit-content;
 }
 
 .grid-row {
