@@ -6,7 +6,6 @@ import playerImage from './images/player.png';
 import doorImage from './images/door.png';
 import buttonImage from './images/button.png';
 import platformImage from './images/platform.png';
-import colorSwitcherImage from './images/color_switcher.png';
 import arrowBlockImage from './images/arrow_block.png';
 import arrowButtonImage from './images/arrow_button.png';
 import andWireImage from './images/and_wire.png';
@@ -49,9 +48,6 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Platform') {
       return platformImage;
-    }
-    if (type === 'Color Switcher') {
-      return colorSwitcherImage;
     }
     if (type === 'Arrow Block') {
       return arrowBlockImage;
