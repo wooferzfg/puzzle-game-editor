@@ -26,6 +26,7 @@ import immovableReflectorOrthogonal from './images/immovable_reflector_orthogona
 import receiverBlue from './images/receiver_blue.png';
 import receiverRed from './images/receiver_red.png';
 import goalImage from './images/goal_cell.png';
+import barrierImage from './images/rotator_barrier.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
   const { type, rotationDirection, isToggle, isDiagonal, isImmovable, laserColor } = objectData;
@@ -120,6 +121,9 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Goal') {
       return goalImage;
+    }
+    if (type === 'Barrier') {
+      return barrierImage;
     }
     throw new Error(`No image for grid object: ${type}`);
   };
