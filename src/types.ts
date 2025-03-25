@@ -12,7 +12,6 @@ export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes)
 export const doorTypes: ObjectType[] = ['Door', 'Platform'];
 export const rotatableObjectTypes: ObjectType[] = ['Conveyor', 'Arrow Block', 'Arrow Button', 'Emitter', 'Reflector'];
 export const laserColoredObjectTypes: ObjectType[] = ['Emitter', 'Receiver'];
-export const diagonalObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 export const immovableObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 export type ActionType = 'Move Object';
 export const actionTypes: ActionType[] = ['Move Object'];
@@ -28,7 +27,6 @@ export interface ObjectData {
   rotationDirection?: RotationDirection;
   connectedObjectIds?: string[];
   isToggle?: boolean;
-  isDiagonal?: boolean;
   isImmovable?: boolean;
   laserColor?: LaserColor;
 }
@@ -60,7 +58,6 @@ export interface CellProps {
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
   onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
-  onSetDiagonal: (coordinate: CellCoordinate, id: string, isDiagonal: boolean) => void;
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
@@ -80,7 +77,6 @@ export interface ContextMenuItemClickProps {
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
   onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
-  onSetDiagonal: (coordinate: CellCoordinate, id: string, isDiagonal: boolean) => void;
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;

@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
-import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, diagonalObjectTypes, immovableObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes } from './types';
+import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, immovableObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes } from './types';
 import { exportFile, loadFile } from './Storage';
 
 function App() {
@@ -79,7 +79,6 @@ function App() {
         isToggle: doorTypes.includes(objectType) ? false : undefined,
         id: generateId(objectType),
         connectedObjectIds: switchAndWireTypes.includes(objectType) ? [] : undefined,
-        isDiagonal: diagonalObjectTypes.includes(objectType) ? false : undefined,
         isImmovable: immovableObjectTypes.includes(objectType) ? false : undefined,
         laserColor: laserColoredObjectTypes.includes(objectType) ? 'red' : undefined,
       });
@@ -232,16 +231,6 @@ function App() {
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
     objectToUpdate!.isToggle = isToggle;
-
-    updateGrid(newGrid);
-  };
-
-  const handleSetDiagonal = ({ row, column }: CellCoordinate, idToUpdate: string, isDiagonal: boolean) => {
-    const newGrid = _.cloneDeep(grid);
-    const cell = newGrid[row][column];
-
-    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
-    objectToUpdate!.isDiagonal = isDiagonal;
 
     updateGrid(newGrid);
   };
@@ -442,7 +431,6 @@ function App() {
                 onRemoveObject={handleRemoveObject}
                 onSetRotation={handleSetRotation}
                 onSetToggle={handleSetToggle}
-                onSetDiagonal={handleSetDiagonal}
                 onSetImmovable={handleSetImmovable}
                 onSetLaserColor={handleSetLaserColor}
                 onConnect={handleConnect}

@@ -11,17 +11,11 @@ import arrowButtonImage from './images/arrow_button.png';
 import andWireImage from './images/and_wire.png';
 import orWireImage from './images/or_wire.png';
 import notWireImage from './images/not_wire.png';
-import laserEmitterDiagonalBlue from './images/laser_emitter_diagonal_blue.png';
-import laserEmitterDiagonalRed from './images/laser_emitter_diagonal_red.png';
 import laserEmitterOrthogonalBlue from './images/laser_emitter_orthogonal_blue.png';
 import laserEmitterOrthogonalRed from './images/laser_emitter_orthogonal_red.png';
-import reflectorDiagonal from './images/reflector_diagonal.png';
 import reflectorOrthogonal from './images/reflector_orthogonal.png';
-import immovableLaserEmitterDiagonalBlue from './images/immovable_laser_emitter_diagonal_blue.png';
-import immovableLaserEmitterDiagonalRed from './images/immovable_laser_emitter_diagonal_red.png';
 import immovableLaserEmitterOrthogonalBlue from './images/immovable_laser_emitter_orthogonal_blue.png';
 import immovableLaserEmitterOrthogonalRed from './images/immovable_laser_emitter_orthogonal_red.png';
-import immovableReflectorDiagonal from './images/immovable_reflector_diagonal.png';
 import immovableReflectorOrthogonal from './images/immovable_reflector_orthogonal.png';
 import receiverBlue from './images/receiver_blue.png';
 import receiverRed from './images/receiver_red.png';
@@ -29,7 +23,7 @@ import goalImage from './images/goal_cell.png';
 import barrierImage from './images/rotator_barrier.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
-  const { type, rotationDirection, isToggle, isDiagonal, isImmovable, laserColor } = objectData;
+  const { type, rotationDirection, isToggle, isImmovable, laserColor } = objectData;
 
   const getImageForObject = () => {
     if (type === 'Conveyor') {
@@ -67,14 +61,6 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (isImmovable) {
       if (type === 'Emitter') {
-        if (isDiagonal) {
-          if (laserColor === 'blue') {
-            return immovableLaserEmitterDiagonalBlue;
-          }
-          if (laserColor === 'red') {
-            return immovableLaserEmitterDiagonalRed;
-          }
-        }
         if (laserColor === 'blue') {
           return immovableLaserEmitterOrthogonalBlue;
         }
@@ -83,21 +69,10 @@ export function GridObject({ objectData }: GridObjectProps) {
         }
       }
       if (type === 'Reflector') {
-        if (isDiagonal) {
-          return immovableReflectorDiagonal;
-        }
         return immovableReflectorOrthogonal;
       }
     }
     if (type === 'Emitter') {
-      if (isDiagonal) {
-        if (laserColor === 'blue') {
-          return laserEmitterDiagonalBlue;
-        }
-        if (laserColor === 'red') {
-          return laserEmitterDiagonalRed;
-        }
-      }
       if (laserColor === 'blue') {
         return laserEmitterOrthogonalBlue;
       }
@@ -106,9 +81,6 @@ export function GridObject({ objectData }: GridObjectProps) {
       }
     }
     if (type === 'Reflector') {
-      if (isDiagonal) {
-        return reflectorDiagonal;
-      }
       return reflectorOrthogonal;
     }
     if (type === 'Receiver') {
