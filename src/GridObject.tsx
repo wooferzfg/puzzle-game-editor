@@ -3,6 +3,7 @@ import { GridObjectProps } from "./types";
 import conveyorImage from './images/conveyor.png';
 import boxImage from './images/block.png';
 import playerImage from './images/player.png';
+import playerTwoImage from './images/player_two.png';
 import doorImage from './images/door.png';
 import buttonImage from './images/button.png';
 import platformImage from './images/platform.png';
@@ -34,6 +35,9 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Player') {
       return playerImage;
+    }
+    if (type === 'Player Two') {
+      return playerTwoImage;
     }
     if (type === 'Door') {
       return doorImage;
