@@ -24,7 +24,7 @@ import goalImage from './images/goal_cell.png';
 import barrierImage from './images/rotator_barrier.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
-  const { type, rotationDirection, isToggle, isImmovable, laserColor } = objectData;
+  const { type, rotationDirection, isImmovable, laserColor } = objectData;
 
   const getImageForObject = () => {
     if (type === 'Conveyor') {
@@ -105,7 +105,7 @@ export function GridObject({ objectData }: GridObjectProps) {
   };
 
   return (
-    <div className={`grid-object ${rotationDirection ?? ''} ${isToggle ? 'toggle' : ''}`} key={type}>
+    <div className={`grid-object ${rotationDirection ?? ''}`} key={type}>
       <img alt={type} src={getImageForObject()} />
       <div className="highlight-box" />
     </div>

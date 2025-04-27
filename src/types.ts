@@ -26,7 +26,6 @@ export interface ObjectData {
   id: string;
   rotationDirection?: RotationDirection;
   connectedObjectIds?: string[];
-  isToggle?: boolean;
   isImmovable?: boolean;
   laserColor?: LaserColor;
 }
@@ -57,7 +56,6 @@ export interface CellProps {
   onMouseEnter: () => void;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
-  onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
@@ -76,7 +74,6 @@ export interface ContextMenuItemClickProps {
   coordinate: CellCoordinate;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
-  onSetToggle: (coordinate: CellCoordinate, id: string, isToggle: boolean) => void;
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;

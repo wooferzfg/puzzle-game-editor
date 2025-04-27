@@ -76,7 +76,6 @@ function App() {
       newGrid[row][column].objects.push({
         type: objectType,
         rotationDirection: rotatableObjectTypes.includes(objectType) ? 'up' : undefined,
-        isToggle: doorTypes.includes(objectType) ? false : undefined,
         id: generateId(objectType),
         connectedObjectIds: switchAndWireTypes.includes(objectType) ? [] : undefined,
         isImmovable: immovableObjectTypes.includes(objectType) ? false : undefined,
@@ -221,16 +220,6 @@ function App() {
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
     objectToUpdate!.rotationDirection = direction;
-
-    updateGrid(newGrid);
-  };
-
-  const handleSetToggle = ({ row, column }: CellCoordinate, idToUpdate: string, isToggle: boolean) => {
-    const newGrid = _.cloneDeep(grid);
-    const cell = newGrid[row][column];
-
-    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
-    objectToUpdate!.isToggle = isToggle;
 
     updateGrid(newGrid);
   };
@@ -430,7 +419,6 @@ function App() {
                 onMouseEnter={() => handleMouseEnter(row, column)}
                 onRemoveObject={handleRemoveObject}
                 onSetRotation={handleSetRotation}
-                onSetToggle={handleSetToggle}
                 onSetImmovable={handleSetImmovable}
                 onSetLaserColor={handleSetLaserColor}
                 onConnect={handleConnect}

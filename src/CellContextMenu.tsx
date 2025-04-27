@@ -25,22 +25,6 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
       </Item>
     );
 
-    if (doorTypes.includes(gridObject.type)) {
-      menuItems.push(
-        <Item
-          key={gridObject.type}
-          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
-            const { coordinate: { row, column }, onSetToggle } = props!;
-            onSetToggle({ row, column }, gridObject.id, !gridObject.isToggle);
-            hideAll();
-          }}
-          onMouseDown={(event) => event.stopPropagation()}
-        >
-          {gridObject.type}: {gridObject.isToggle ? 'disable' : 'enable'} toggle
-        </Item>
-      );
-    }
-
     if (rotatableObjectTypes.includes(gridObject.type)) {
       rotationDirections.forEach((direction) => {
         menuItems.push(
