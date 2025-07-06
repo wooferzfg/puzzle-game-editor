@@ -80,6 +80,7 @@ function App() {
         connectedObjectIds: switchAndWireTypes.includes(objectType) ? [] : undefined,
         isImmovable: immovableObjectTypes.includes(objectType) ? false : undefined,
         laserColor: laserColoredObjectTypes.includes(objectType) ? 'red' : undefined,
+        countdownValue: objectType === 'Countdown' ? 1 : undefined,
       });
     }
     updateGrid(newGrid);
@@ -240,6 +241,16 @@ function App() {
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
     objectToUpdate!.laserColor = laserColor;
+
+    updateGrid(newGrid);
+  };
+
+  const handleSetCountdownValue = ({ row, column }: CellCoordinate, idToUpdate: string, countdownValue: number) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.countdownValue = countdownValue;
 
     updateGrid(newGrid);
   };
@@ -421,6 +432,7 @@ function App() {
                 onSetRotation={handleSetRotation}
                 onSetImmovable={handleSetImmovable}
                 onSetLaserColor={handleSetLaserColor}
+                onSetCountdownValue={handleSetCountdownValue}
                 onConnect={handleConnect}
                 onDisconnect={handleDisconnect}
                 doorsAndWires={doorAndWireObjects}

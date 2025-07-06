@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ReactNode } from 'react';
 import { Menu, Item, Separator, Submenu } from 'react-contexify';
-import { CellContextMenuProps, ContextMenuItemClickProps, immovableObjectTypes, laserColoredObjectTypes, rotatableObjectTypes, switchAndWireTypes, rotationDirections } from './types';
+import { CellContextMenuProps, ContextMenuItemClickProps, immovableObjectTypes, laserColoredObjectTypes, rotatableObjectTypes, switchAndWireTypes, rotationDirections, countdownValues } from './types';
 
 export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: CellContextMenuProps) {
   const menuItems: ReactNode[] = [];
@@ -74,6 +74,24 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
           {gridObject.type} laser color: {newLaserColor}
         </Item>
       );
+    }
+
+    if (gridObject.type === 'Countdown') {
+      countdownValues.forEach((countdownValue) => {
+        menuItems.push(
+          <Item
+            key={gridObject.type}
+            onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+              const { coordinate: { row, column }, onSetCountdownValue } = props!;
+              onSetCountdownValue({ row, column }, gridObject.id, countdownValue);
+              hideAll();
+            }}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            Countdown value: {countdownValue}
+          </Item>
+        );
+      });
     }
 
     if (switchAndWireTypes.includes(gridObject.type)) {

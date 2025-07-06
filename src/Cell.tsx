@@ -18,6 +18,7 @@ export function Cell({
   onSetRotation,
   onSetImmovable,
   onSetLaserColor,
+  onSetCountdownValue,
   onConnect,
   onDisconnect,
   doorsAndWires,
@@ -37,6 +38,7 @@ export function Cell({
       onSetRotation,
       onSetImmovable,
       onSetLaserColor,
+      onSetCountdownValue,
       onConnect,
       onDisconnect,
     };
