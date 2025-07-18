@@ -19,7 +19,7 @@ export const actionTypes: ActionType[] = ['Move Object'];
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
 
-export const countdownValues = [1, 2, 3, 4, 5];
+export const countdownValues = [0, 1, 2, 3, 4, 5];
 
 export type LaserColor = 'red' | 'blue';
 
