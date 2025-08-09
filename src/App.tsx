@@ -361,6 +361,24 @@ function App() {
     }
   }, [grid, hoverCell, allObjects, doorAndWireObjects, highlightedCells, getNewHighlightedCells]);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const levelName = urlParams.get('level');
+    if (levelName) {
+      // Load level from the public/levels folder
+      import(`../public/levels/${levelName}.json`)
+        .then((res) => {
+          setGrid(res.default);
+          setGridStack([]);
+          toast.success(`Loaded level: ${levelName}`);
+        })
+        .catch((error) => {
+          console.error('Error loading level:', error);
+          toast.error(`Failed to load level: ${levelName}`);
+        });
+    }
+  }, []);
+
   return (
     <div className="main-container" onMouseUp={handleMouseUp}>
       <ToastContainer />
