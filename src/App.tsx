@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
-import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, immovableObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes } from './types';
+import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, immovableObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes, CreatureType } from './types';
 import { exportFile, loadFile } from './Storage';
 
 function App() {
@@ -81,6 +81,7 @@ function App() {
         isImmovable: immovableObjectTypes.includes(objectType) ? false : undefined,
         laserColor: laserColoredObjectTypes.includes(objectType) ? 'red' : undefined,
         countdownValue: objectType === 'Countdown' ? 1 : undefined,
+        creatureType: objectType === 'Creature' ? 'Line of Sight' : undefined,
       });
     }
     updateGrid(newGrid);
@@ -221,6 +222,16 @@ function App() {
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
     objectToUpdate!.rotationDirection = direction;
+
+    updateGrid(newGrid);
+  };
+
+  const handleSetCreatureType = ({ row, column }: CellCoordinate, idToUpdate: string, creatureType: CreatureType) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.creatureType = creatureType;
 
     updateGrid(newGrid);
   };
@@ -448,6 +459,7 @@ function App() {
                 onMouseEnter={() => handleMouseEnter(row, column)}
                 onRemoveObject={handleRemoveObject}
                 onSetRotation={handleSetRotation}
+                onSetCreatureType={handleSetCreatureType}
                 onSetImmovable={handleSetImmovable}
                 onSetLaserColor={handleSetLaserColor}
                 onSetCountdownValue={handleSetCountdownValue}

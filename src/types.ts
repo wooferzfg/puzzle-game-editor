@@ -4,8 +4,8 @@ import { ReactNode } from "react";
 export type CellType = 'Wall' | 'Floor' | 'Void';
 export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void'];
 
-export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown';
-export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Player', 'Player Two'];
+export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature';
+export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Player', 'Player Two'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button', 'Receiver'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
@@ -15,6 +15,9 @@ export const laserColoredObjectTypes: ObjectType[] = ['Emitter', 'Receiver'];
 export const immovableObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 export type ActionType = 'Move Object';
 export const actionTypes: ActionType[] = ['Move Object'];
+
+export type CreatureType = 'Line of Sight';
+export const creatureTypes: CreatureType[] = ['Line of Sight'];
 
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
@@ -31,6 +34,7 @@ export interface ObjectData {
   isImmovable?: boolean;
   laserColor?: LaserColor;
   countdownValue?: number;
+  creatureType?: CreatureType;
 }
 
 export interface ObjectWithCoordinate {
@@ -59,6 +63,7 @@ export interface CellProps {
   onMouseEnter: () => void;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
+  onSetCreatureType: (coordinate: CellCoordinate, id: string, creatureType: CreatureType) => void;
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;
@@ -78,6 +83,7 @@ export interface ContextMenuItemClickProps {
   coordinate: CellCoordinate;
   onRemoveObject: (coordinate: CellCoordinate, id: string) => void;
   onSetRotation: (coordinate: CellCoordinate, id: string, direction: RotationDirection) => void;
+  onSetCreatureType: (coordinate: CellCoordinate, id: string, creatureType: CreatureType) => void;
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;

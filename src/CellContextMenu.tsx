@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ReactNode } from 'react';
 import { Menu, Item, Separator, Submenu } from 'react-contexify';
-import { CellContextMenuProps, ContextMenuItemClickProps, immovableObjectTypes, laserColoredObjectTypes, rotatableObjectTypes, switchAndWireTypes, rotationDirections, countdownValues } from './types';
+import { CellContextMenuProps, ContextMenuItemClickProps, immovableObjectTypes, laserColoredObjectTypes, rotatableObjectTypes, switchAndWireTypes, rotationDirections, creatureTypes, countdownValues } from './types';
 
 export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: CellContextMenuProps) {
   const menuItems: ReactNode[] = [];
@@ -38,6 +38,24 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
             onMouseDown={(event) => event.stopPropagation()}
           >
             {gridObject.type} rotation: {direction}
+          </Item>
+        );
+      })
+    }
+
+    if (gridObject.type === 'Creature') {
+      creatureTypes.forEach((creatureType) => {
+        menuItems.push(
+          <Item
+            key={gridObject.type}
+            onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+              const { coordinate: { row, column }, onSetCreatureType } = props!;
+              onSetCreatureType({ row, column }, gridObject.id, creatureType);
+              hideAll();
+            }}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            Creature type: {creatureType}
           </Item>
         );
       })

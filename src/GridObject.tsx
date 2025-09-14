@@ -28,9 +28,10 @@ import countdownPlatform2 from './images/countdown_platform_2.png';
 import countdownPlatform3 from './images/countdown_platform_3.png';
 import countdownPlatform4 from './images/countdown_platform_4.png';
 import countdownPlatform5 from './images/countdown_platform_5.png';
+import lineOfSightCreature from './images/line_of_sight_creature.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
-  const { type, rotationDirection, isImmovable, laserColor, countdownValue } = objectData;
+  const { type, rotationDirection, isImmovable, laserColor, countdownValue, creatureType } = objectData;
 
   const getImageForObject = () => {
     if (type === 'Conveyor') {
@@ -123,6 +124,14 @@ export function GridObject({ objectData }: GridObjectProps) {
           return countdownPlatform5;
         default:
           throw new Error(`Invalid countdown value: ${countdownValue}`);
+      }
+    }
+    if (type === 'Creature') {
+      switch (creatureType) {
+        case 'Line of Sight':
+          return lineOfSightCreature;
+        default:
+          throw new Error(`Invalid creature type: ${creatureType}`);
       }
     }
     throw new Error(`No image for grid object: ${type}`);
