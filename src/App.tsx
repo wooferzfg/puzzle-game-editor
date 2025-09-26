@@ -83,6 +83,7 @@ function App() {
         countdownValue: objectType === 'Countdown' ? 1 : undefined,
         creatureType: objectType === 'Creature' ? 'Line of Sight' : undefined,
         exitLevel: objectType === 'Exit' ? '' : undefined,
+        otherExitId: objectType === 'Exit' ? 'exit-1': undefined,
       });
     }
     updateGrid(newGrid);
@@ -243,6 +244,16 @@ function App() {
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
     objectToUpdate!.exitLevel = exitLevel;
+
+    updateGrid(newGrid);
+  };
+
+  const handleSetOtherExitId = ({ row, column }: CellCoordinate, idToUpdate: string, otherExitId: string) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.otherExitId = otherExitId;
 
     updateGrid(newGrid);
   };
@@ -472,6 +483,7 @@ function App() {
                 onSetRotation={handleSetRotation}
                 onSetCreatureType={handleSetCreatureType}
                 onSetExitLevel={handleSetExitLevel}
+                onSetOtherExitId={handleSetOtherExitId}
                 onSetImmovable={handleSetImmovable}
                 onSetLaserColor={handleSetLaserColor}
                 onSetCountdownValue={handleSetCountdownValue}

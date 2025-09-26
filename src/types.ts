@@ -36,6 +36,7 @@ export interface ObjectData {
   countdownValue?: number;
   creatureType?: CreatureType;
   exitLevel?: string;
+  otherExitId?: string;
 }
 
 export interface ObjectWithCoordinate {
@@ -69,6 +70,7 @@ export interface CellProps {
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
+  onSetOtherExitId: (coordinate: CellCoordinate, id: string, otherExitId: string) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   doorsAndWires: ObjectWithCoordinate[];
@@ -90,6 +92,7 @@ export interface ContextMenuItemClickProps {
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
+  onSetOtherExitId: (coordinate: CellCoordinate, id: string, otherExitId: string) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
 }

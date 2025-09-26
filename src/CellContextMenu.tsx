@@ -79,6 +79,24 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
           Change Exit Level
         </Item>
       );
+
+      menuItems.push(
+        <Item
+          key={gridObject.type}
+          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+            const { coordinate: { row, column }, onSetOtherExitId } = props!;
+            const updatedOtherExitId = prompt('Enter other exit ID:');
+            if (updatedOtherExitId === null) {
+              return;
+            }
+            onSetOtherExitId({ row, column }, gridObject.id, updatedOtherExitId);
+            hideAll();
+          }}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          Change Other Exit ID
+        </Item>
+      );
     }
 
     if (immovableObjectTypes.includes(gridObject.type)) {
