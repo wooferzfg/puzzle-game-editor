@@ -17,6 +17,7 @@ export function Cell({
   onRemoveObject,
   onSetRotation,
   onSetCreatureType,
+  onSetExitLevel,
   onSetImmovable,
   onSetLaserColor,
   onSetCountdownValue,
@@ -38,6 +39,7 @@ export function Cell({
       onRemoveObject,
       onSetRotation,
       onSetCreatureType,
+      onSetExitLevel,
       onSetImmovable,
       onSetLaserColor,
       onSetCountdownValue,
@@ -68,7 +70,8 @@ export function Cell({
       ? ''
       : `=> ${object.connectedObjectIds.join(', ')}`
     );
-    return `${object.id} ${connectedObjectText}`;
+    const exitLevelText = object.exitLevel ? ` => ${object.exitLevel}` : '';
+    return `${object.id} ${connectedObjectText} ${exitLevelText}`;
   }
   const objectIdsTooltip = _.isEmpty(objects) ? null : objects.map((object) => <div>{getTooltipText(object)}</div>);
 

@@ -29,6 +29,7 @@ import countdownPlatform3 from './images/countdown_platform_3.png';
 import countdownPlatform4 from './images/countdown_platform_4.png';
 import countdownPlatform5 from './images/countdown_platform_5.png';
 import lineOfSightCreature from './images/line_of_sight_creature.png';
+import exitImage from './images/exit.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
   const { type, rotationDirection, isImmovable, laserColor, countdownValue, creatureType } = objectData;
@@ -133,6 +134,9 @@ export function GridObject({ objectData }: GridObjectProps) {
         default:
           throw new Error(`Invalid creature type: ${creatureType}`);
       }
+    }
+    if (type === 'Exit') {
+      return exitImage;
     }
     throw new Error(`No image for grid object: ${type}`);
   };
