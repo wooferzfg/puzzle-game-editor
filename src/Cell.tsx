@@ -61,8 +61,11 @@ export function Cell({
       case 'Floor':
         return '#D2B48C'; // light brown
       case 'Void':
-      default:
         return '#654321'; // dark brown
+      case 'Water':
+        return '#1E90FF'; // blue
+      default:
+        throw new Error(`Unknown cell type: ${type}`);
     }
   };
 
