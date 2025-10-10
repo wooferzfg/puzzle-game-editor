@@ -82,6 +82,7 @@ function App() {
         laserColor: laserColoredObjectTypes.includes(objectType) ? 'red' : undefined,
         countdownValue: objectType === 'Countdown' ? 1 : undefined,
         creatureType: objectType === 'Creature' ? 'Line of Sight' : undefined,
+        isBucketFull: objectType === 'Bucket' ? false : undefined,
         exitLevel: objectType === 'Exit' ? '' : undefined,
         otherExitId: objectType === 'Exit' ? 'exit-1': undefined,
       });
@@ -288,6 +289,16 @@ function App() {
     updateGrid(newGrid);
   };
 
+  const handleSetIsBucketFull = ({ row, column }: CellCoordinate, idToUpdate: string, isBucketFull: boolean) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.isBucketFull = isBucketFull;
+
+    updateGrid(newGrid);
+  };
+
   const handleConnect = ({ row, column }: CellCoordinate, idToUpdate: string, otherObjectId: string) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
@@ -487,6 +498,7 @@ function App() {
                 onSetImmovable={handleSetImmovable}
                 onSetLaserColor={handleSetLaserColor}
                 onSetCountdownValue={handleSetCountdownValue}
+                onSetIsBucketFull={handleSetIsBucketFull}
                 onConnect={handleConnect}
                 onDisconnect={handleDisconnect}
                 doorsAndWires={doorAndWireObjects}

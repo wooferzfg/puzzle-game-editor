@@ -22,6 +22,7 @@ export function Cell({
   onSetImmovable,
   onSetLaserColor,
   onSetCountdownValue,
+  onSetIsBucketFull,
   onConnect,
   onDisconnect,
   doorsAndWires,
@@ -45,6 +46,7 @@ export function Cell({
       onSetImmovable,
       onSetLaserColor,
       onSetCountdownValue,
+      onSetIsBucketFull,
       onConnect,
       onDisconnect,
     };

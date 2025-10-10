@@ -115,6 +115,22 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
       );
     }
 
+    if (gridObject.type === 'Bucket') {
+      menuItems.push(
+        <Item
+          key={gridObject.type}
+          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+            const { coordinate: { row, column }, onSetIsBucketFull } = props!;
+            onSetIsBucketFull({ row, column }, gridObject.id, !gridObject.isBucketFull);
+            hideAll();
+          }}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          {gridObject.type}: {gridObject.isBucketFull ? 'change to empty' : 'change to full'}
+        </Item>
+      );
+    }
+
     if (laserColoredObjectTypes.includes(gridObject.type)) {
       const newLaserColor = gridObject.laserColor === 'red' ? 'blue' : 'red';
       menuItems.push(

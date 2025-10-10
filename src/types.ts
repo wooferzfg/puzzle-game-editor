@@ -4,8 +4,8 @@ import { ReactNode } from "react";
 export type CellType = 'Wall' | 'Floor' | 'Void' | 'Water';
 export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void', 'Water'];
 
-export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Exit';
-export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Exit', 'Player', 'Player Two'];
+export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Bucket' | 'Fire' | 'Exit';
+export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Bucket', 'Fire', 'Exit', 'Player', 'Player Two'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button', 'Receiver'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
@@ -16,8 +16,8 @@ export const immovableObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 export type ActionType = 'Move Object';
 export const actionTypes: ActionType[] = ['Move Object'];
 
-export type CreatureType = 'Line of Sight';
-export const creatureTypes: CreatureType[] = ['Line of Sight'];
+export type CreatureType = 'Line of Sight' | 'Water';
+export const creatureTypes: CreatureType[] = ['Line of Sight', 'Water'];
 
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
@@ -35,6 +35,7 @@ export interface ObjectData {
   laserColor?: LaserColor;
   countdownValue?: number;
   creatureType?: CreatureType;
+  isBucketFull?: boolean;
   exitLevel?: string;
   otherExitId?: string;
 }
@@ -69,6 +70,7 @@ export interface CellProps {
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;
+  onSetIsBucketFull: (coordinate: CellCoordinate, id: string, isBucketFull: boolean) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
   onSetOtherExitId: (coordinate: CellCoordinate, id: string, otherExitId: string) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
@@ -91,6 +93,7 @@ export interface ContextMenuItemClickProps {
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;
+  onSetIsBucketFull: (coordinate: CellCoordinate, id: string, isBucketFull: boolean) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
   onSetOtherExitId: (coordinate: CellCoordinate, id: string, otherExitId: string) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
