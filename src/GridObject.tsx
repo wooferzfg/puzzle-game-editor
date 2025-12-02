@@ -30,6 +30,7 @@ import countdownPlatform4 from './images/countdown_platform_4.png';
 import countdownPlatform5 from './images/countdown_platform_5.png';
 import lineOfSightCreature from './images/line_of_sight_creature.png';
 import fire from './images/fire.png';
+import ball from './images/ball.png';
 import waterCreature from './images/water_creature.png';
 import bucketEmpty from './images/bucket_empty.png';
 import bucketFull from './images/bucket_full.png';
@@ -143,6 +144,9 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Fire') {
       return fire;
+    }
+    if (type === 'Ball') {
+      return ball;
     }
     if (type === 'Bucket') {
       if (objectData.isBucketFull) {
