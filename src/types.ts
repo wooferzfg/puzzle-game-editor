@@ -16,8 +16,8 @@ export const immovableObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 export type ActionType = 'Move Object';
 export const actionTypes: ActionType[] = ['Move Object'];
 
-export type CreatureType = 'Line of Sight' | 'Water';
-export const creatureTypes: CreatureType[] = ['Line of Sight', 'Water'];
+export type CreatureType = 'Line of Sight' | 'Water' | 'Flinger';
+export const creatureTypes: CreatureType[] = ['Line of Sight', 'Water', 'Flinger'];
 
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];

@@ -32,6 +32,7 @@ import lineOfSightCreature from './images/line_of_sight_creature.png';
 import fire from './images/fire.png';
 import ball from './images/ball.png';
 import waterCreature from './images/water_creature.png';
+import flingerCreature from './images/flinger.png';
 import bucketEmpty from './images/bucket_empty.png';
 import bucketFull from './images/bucket_full.png';
 import exitImage from './images/exit.png';
@@ -138,6 +139,8 @@ export function GridObject({ objectData }: GridObjectProps) {
           return lineOfSightCreature;
         case 'Water':
           return waterCreature;
+        case 'Flinger':
+          return flingerCreature;
         default:
           throw new Error(`Invalid creature type: ${creatureType}`);
       }
