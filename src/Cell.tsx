@@ -66,6 +66,8 @@ export function Cell({
         return '#654321'; // dark brown
       case 'Water':
         return '#1E90FF'; // blue
+      case 'Excluded':
+        return '#000000'; // black
       default:
         throw new Error(`Unknown cell type: ${type}`);
     }
