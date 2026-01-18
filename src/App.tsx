@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
-import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, immovableObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes, CreatureType } from './types';
+import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, immovableObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes, CreatureType, ExitType } from './types';
 import { exportFile, loadFile } from './Storage';
 
 function App() {
@@ -85,6 +85,7 @@ function App() {
         isBucketFull: objectType === 'Bucket' ? false : undefined,
         exitLevel: objectType === 'Exit' ? '' : undefined,
         otherExitId: objectType === 'Exit' ? 'exit-1': undefined,
+        exitType: objectType === 'Exit' ? 'separate' : undefined,
       });
     }
     updateGrid(newGrid);
@@ -255,6 +256,16 @@ function App() {
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
     objectToUpdate!.otherExitId = otherExitId;
+
+    updateGrid(newGrid);
+  };
+
+  const handleSetExitType = ({ row, column }: CellCoordinate, idToUpdate: string, exitType: ExitType) => {
+    const newGrid = _.cloneDeep(grid);
+    const cell = newGrid[row][column];
+
+    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
+    objectToUpdate!.exitType = exitType;
 
     updateGrid(newGrid);
   };
@@ -495,6 +506,7 @@ function App() {
                 onSetCreatureType={handleSetCreatureType}
                 onSetExitLevel={handleSetExitLevel}
                 onSetOtherExitId={handleSetOtherExitId}
+                onSetExitType={handleSetExitType}
                 onSetImmovable={handleSetImmovable}
                 onSetLaserColor={handleSetLaserColor}
                 onSetCountdownValue={handleSetCountdownValue}

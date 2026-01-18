@@ -19,6 +19,7 @@ export function Cell({
   onSetCreatureType,
   onSetExitLevel,
   onSetOtherExitId,
+  onSetExitType,
   onSetImmovable,
   onSetLaserColor,
   onSetCountdownValue,
@@ -43,6 +44,7 @@ export function Cell({
       onSetCreatureType,
       onSetExitLevel,
       onSetOtherExitId,
+      onSetExitType,
       onSetImmovable,
       onSetLaserColor,
       onSetCountdownValue,
@@ -79,7 +81,7 @@ export function Cell({
       ? ''
       : `=> ${object.connectedObjectIds.join(', ')}`
     );
-    const exitLevelText = object.exitLevel ? ` => ${object.exitLevel} [${object.otherExitId}]` : '';
+    const exitLevelText = object.exitLevel ? ` => ${object.exitLevel} [${object.otherExitId}] [${object.exitType}]` : '';
     return `${object.id} ${connectedObjectText} ${exitLevelText}`;
   }
   const objectIdsTooltip = _.isEmpty(objects) ? null : objects.map((object) => <div>{getTooltipText(object)}</div>);

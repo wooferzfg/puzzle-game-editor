@@ -97,6 +97,20 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
           Change Other Exit ID
         </Item>
       );
+
+      menuItems.push(
+        <Item
+          key={gridObject.type}
+          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
+            const { coordinate: { row, column }, onSetExitType } = props!;
+            onSetExitType({ row, column }, gridObject.id, gridObject.exitType === 'separate' ? 'together' : 'separate');
+            hideAll();
+          }}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          {gridObject.type}: {gridObject.exitType === 'separate' ? 'change to together' : 'change to separate'}
+        </Item>
+      );
     }
 
     if (immovableObjectTypes.includes(gridObject.type)) {

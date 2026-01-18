@@ -26,6 +26,8 @@ export const countdownValues = [0, 1, 2, 3, 4, 5];
 
 export type LaserColor = 'red' | 'blue';
 
+export type ExitType = 'separate' | 'together';
+
 export interface ObjectData {
   type: ObjectType;
   id: string;
@@ -38,6 +40,7 @@ export interface ObjectData {
   isBucketFull?: boolean;
   exitLevel?: string;
   otherExitId?: string;
+  exitType?: ExitType;
 }
 
 export interface ObjectWithCoordinate {
@@ -73,6 +76,7 @@ export interface CellProps {
   onSetIsBucketFull: (coordinate: CellCoordinate, id: string, isBucketFull: boolean) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
   onSetOtherExitId: (coordinate: CellCoordinate, id: string, otherExitId: string) => void;
+  onSetExitType: (coordinate: CellCoordinate, id: string, exitType: ExitType) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   doorsAndWires: ObjectWithCoordinate[];
@@ -96,6 +100,7 @@ export interface ContextMenuItemClickProps {
   onSetIsBucketFull: (coordinate: CellCoordinate, id: string, isBucketFull: boolean) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
   onSetOtherExitId: (coordinate: CellCoordinate, id: string, otherExitId: string) => void;
+  onSetExitType: (coordinate: CellCoordinate, id: string, exitType: ExitType) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
 }
