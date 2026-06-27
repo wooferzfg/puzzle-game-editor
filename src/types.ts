@@ -4,8 +4,8 @@ import { ReactNode } from "react";
 export type CellType = 'Wall' | 'Floor' | 'Void' | 'Water' | 'Excluded';
 export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void', 'Water', 'Excluded'];
 
-export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Bucket' | 'Fire' | 'Ball' | 'Exit';
-export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Bucket', 'Fire', 'Ball', 'Exit', 'Player', 'Player Two'];
+export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Bucket' | 'Fire' | 'Ball' | 'Exit' | 'Post Goal Platform';
+export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Bucket', 'Fire', 'Ball', 'Exit', 'Post Goal Platform', 'Player', 'Player Two'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button', 'Receiver'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
