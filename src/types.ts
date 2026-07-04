@@ -60,6 +60,14 @@ export interface CellCoordinate {
 
 export type GridState = CellState[][];
 
+export interface JsonFormat {
+  start: {
+    cells: GridState,
+    topY: number,
+    leftX: number,
+  }
+}
+
 export interface CellProps {
   coordinate: CellCoordinate;
   cellType: CellType;

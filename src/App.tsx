@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
-import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, immovableObjectTypes, doorTypes, GridState, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes, CreatureType, ExitType } from './types';
+import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, immovableObjectTypes, doorTypes, GridState, JsonFormat, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes, CreatureType, ExitType } from './types';
 import { exportFile, loadFile } from './Storage';
 
 function App() {
@@ -353,8 +353,8 @@ function App() {
 
   const loadLevelFromFile = async () => {
     const levelJson = await loadFile();
-    const levelParsed = JSON.parse(levelJson);
-    setGrid(levelParsed);
+    const levelParsed = JSON.parse(levelJson) as JsonFormat;
+    setGrid(levelParsed.start.cells);
     setGridStack([]);
     toast.success('Loaded level from JSON');
   };
@@ -375,7 +375,17 @@ function App() {
   const allObjects: { [key: string]: ObjectWithCoordinate } = getGridObjects(grid);
   const doorAndWireObjects: ObjectWithCoordinate[] = _.filter(allObjects, (object) => doorTypes.includes(object.object.type) || wireTypes.includes(object.object.type));
 
-  const stringGridState = useMemo(() => JSON.stringify(grid), [grid]);
+  const buildGridJsonData = (currentGrid: GridState): JsonFormat => {
+    return {
+      start: {
+        cells: currentGrid,
+        leftX: 0,
+        topY: 0,
+      }
+    };
+  };
+
+  const stringGridState = useMemo(() => JSON.stringify(buildGridJsonData(grid)), [grid]);
 
   const getNewHighlightedCells = useCallback((
     row: number,
