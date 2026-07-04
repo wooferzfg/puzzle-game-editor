@@ -354,10 +354,14 @@ function App() {
   const loadLevelFromFile = async () => {
     const levelJson = await loadFile();
     const levelParsed = JSON.parse(levelJson) as JsonFormat;
-    setGrid(levelParsed.start.cells);
-    setGridStack([]);
+    loadGridFromJson(levelParsed);
     toast.success('Loaded level from JSON');
   };
+
+  const loadGridFromJson = (jsonData: JsonFormat) => {
+    setGrid(jsonData.start.cells);
+    setGridStack([]);
+  }
 
   const allButtons: (CellType | ObjectType | ActionType)[] = _.concat(cellTypes, objectTypes, actionTypes);
 
@@ -433,8 +437,8 @@ function App() {
       // Load level from the public/levels folder
       import(`../public/levels/${levelName}.json`)
         .then((res) => {
-          setGrid(res.default);
-          setGridStack([]);
+          const jsonData = res.default as JsonFormat;
+          loadGridFromJson(jsonData);
           toast.success(`Loaded level: ${levelName}`);
         })
         .catch((error) => {
