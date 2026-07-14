@@ -29,12 +29,8 @@ import countdownPlatform3 from './images/countdown_platform_3.png';
 import countdownPlatform4 from './images/countdown_platform_4.png';
 import countdownPlatform5 from './images/countdown_platform_5.png';
 import lineOfSightCreature from './images/line_of_sight_creature.png';
-import fire from './images/fire.png';
 import ball from './images/ball.png';
-import waterCreature from './images/water_creature.png';
 import flingerCreature from './images/flinger.png';
-import bucketEmpty from './images/bucket_empty.png';
-import bucketFull from './images/bucket_full.png';
 import exitImage from './images/exit.png';
 import postGoalPlatform from './images/post_goal_platform.png';
 
@@ -138,25 +134,14 @@ export function GridObject({ objectData }: GridObjectProps) {
       switch (creatureType) {
         case 'Line of Sight':
           return lineOfSightCreature;
-        case 'Water':
-          return waterCreature;
         case 'Flinger':
           return flingerCreature;
         default:
           throw new Error(`Invalid creature type: ${creatureType}`);
       }
     }
-    if (type === 'Fire') {
-      return fire;
-    }
     if (type === 'Ball') {
       return ball;
-    }
-    if (type === 'Bucket') {
-      if (objectData.isBucketFull) {
-        return bucketFull;
-      }
-      return bucketEmpty;
     }
     if (type === 'Exit') {
       return exitImage;

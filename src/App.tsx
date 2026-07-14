@@ -82,9 +82,7 @@ function App() {
         laserColor: laserColoredObjectTypes.includes(objectType) ? 'red' : undefined,
         countdownValue: objectType === 'Countdown' ? 1 : undefined,
         creatureType: objectType === 'Creature' ? 'Line of Sight' : undefined,
-        isBucketFull: objectType === 'Bucket' ? false : undefined,
         exitLevel: objectType === 'Exit' ? '' : undefined,
-        otherExitId: objectType === 'Exit' ? 'exit-1': undefined,
         exitType: objectType === 'Exit' ? 'separate' : undefined,
       });
     }
@@ -250,16 +248,6 @@ function App() {
     updateGrid(newGrid);
   };
 
-  const handleSetOtherExitId = ({ row, column }: CellCoordinate, idToUpdate: string, otherExitId: string) => {
-    const newGrid = _.cloneDeep(grid);
-    const cell = newGrid[row][column];
-
-    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
-    objectToUpdate!.otherExitId = otherExitId;
-
-    updateGrid(newGrid);
-  };
-
   const handleSetExitType = ({ row, column }: CellCoordinate, idToUpdate: string, exitType: ExitType) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
@@ -296,16 +284,6 @@ function App() {
 
     const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
     objectToUpdate!.countdownValue = countdownValue;
-
-    updateGrid(newGrid);
-  };
-
-  const handleSetIsBucketFull = ({ row, column }: CellCoordinate, idToUpdate: string, isBucketFull: boolean) => {
-    const newGrid = _.cloneDeep(grid);
-    const cell = newGrid[row][column];
-
-    const objectToUpdate = cell.objects.find((cellObject) => cellObject.id === idToUpdate);
-    objectToUpdate!.isBucketFull = isBucketFull;
 
     updateGrid(newGrid);
   };
@@ -519,12 +497,10 @@ function App() {
                 onSetRotation={handleSetRotation}
                 onSetCreatureType={handleSetCreatureType}
                 onSetExitLevel={handleSetExitLevel}
-                onSetOtherExitId={handleSetOtherExitId}
                 onSetExitType={handleSetExitType}
                 onSetImmovable={handleSetImmovable}
                 onSetLaserColor={handleSetLaserColor}
                 onSetCountdownValue={handleSetCountdownValue}
-                onSetIsBucketFull={handleSetIsBucketFull}
                 onConnect={handleConnect}
                 onDisconnect={handleDisconnect}
                 doorsAndWires={doorAndWireObjects}

@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { ReactNode } from "react";
 
-export type CellType = 'Wall' | 'Floor' | 'Void' | 'Water' | 'Excluded';
-export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void', 'Water', 'Excluded'];
+export type CellType = 'Wall' | 'Floor' | 'Void' | 'Excluded';
+export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void', 'Excluded'];
 
-export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Bucket' | 'Fire' | 'Ball' | 'Exit' | 'Post Goal Platform';
-export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Bucket', 'Fire', 'Ball', 'Exit', 'Post Goal Platform', 'Player', 'Player Two'];
+export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Ball' | 'Exit' | 'Post Goal Platform';
+export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Ball', 'Exit', 'Post Goal Platform', 'Player', 'Player Two'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button', 'Receiver'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
@@ -16,8 +16,8 @@ export const immovableObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
 export type ActionType = 'Move Object';
 export const actionTypes: ActionType[] = ['Move Object'];
 
-export type CreatureType = 'Line of Sight' | 'Water' | 'Flinger';
-export const creatureTypes: CreatureType[] = ['Line of Sight', 'Water', 'Flinger'];
+export type CreatureType = 'Line of Sight' | 'Flinger';
+export const creatureTypes: CreatureType[] = ['Line of Sight', 'Flinger'];
 
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
@@ -37,9 +37,7 @@ export interface ObjectData {
   laserColor?: LaserColor;
   countdownValue?: number;
   creatureType?: CreatureType;
-  isBucketFull?: boolean;
   exitLevel?: string;
-  otherExitId?: string;
   exitType?: ExitType;
 }
 
@@ -81,9 +79,7 @@ export interface CellProps {
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;
-  onSetIsBucketFull: (coordinate: CellCoordinate, id: string, isBucketFull: boolean) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
-  onSetOtherExitId: (coordinate: CellCoordinate, id: string, otherExitId: string) => void;
   onSetExitType: (coordinate: CellCoordinate, id: string, exitType: ExitType) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
@@ -105,9 +101,7 @@ export interface ContextMenuItemClickProps {
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
   onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;
-  onSetIsBucketFull: (coordinate: CellCoordinate, id: string, isBucketFull: boolean) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
-  onSetOtherExitId: (coordinate: CellCoordinate, id: string, otherExitId: string) => void;
   onSetExitType: (coordinate: CellCoordinate, id: string, exitType: ExitType) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
   onDisconnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;

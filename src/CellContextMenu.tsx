@@ -84,24 +84,6 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
         <Item
           key={gridObject.type}
           onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
-            const { coordinate: { row, column }, onSetOtherExitId } = props!;
-            const updatedOtherExitId = prompt('Enter other exit ID:');
-            if (updatedOtherExitId === null) {
-              return;
-            }
-            onSetOtherExitId({ row, column }, gridObject.id, updatedOtherExitId);
-            hideAll();
-          }}
-          onMouseDown={(event) => event.stopPropagation()}
-        >
-          Change Other Exit ID
-        </Item>
-      );
-
-      menuItems.push(
-        <Item
-          key={gridObject.type}
-          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
             const { coordinate: { row, column }, onSetExitType } = props!;
             onSetExitType({ row, column }, gridObject.id, gridObject.exitType === 'separate' ? 'together' : 'separate');
             hideAll();
@@ -125,22 +107,6 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
           onMouseDown={(event) => event.stopPropagation()}
         >
           {gridObject.type}: {gridObject.isImmovable ? 'change to movable' : 'change to immovable'}
-        </Item>
-      );
-    }
-
-    if (gridObject.type === 'Bucket') {
-      menuItems.push(
-        <Item
-          key={gridObject.type}
-          onClick={({ props }: { props?: ContextMenuItemClickProps }) => {
-            const { coordinate: { row, column }, onSetIsBucketFull } = props!;
-            onSetIsBucketFull({ row, column }, gridObject.id, !gridObject.isBucketFull);
-            hideAll();
-          }}
-          onMouseDown={(event) => event.stopPropagation()}
-        >
-          {gridObject.type}: {gridObject.isBucketFull ? 'change to empty' : 'change to full'}
         </Item>
       );
     }

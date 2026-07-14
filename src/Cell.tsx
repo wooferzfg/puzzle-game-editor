@@ -18,12 +18,10 @@ export function Cell({
   onSetRotation,
   onSetCreatureType,
   onSetExitLevel,
-  onSetOtherExitId,
   onSetExitType,
   onSetImmovable,
   onSetLaserColor,
   onSetCountdownValue,
-  onSetIsBucketFull,
   onConnect,
   onDisconnect,
   doorsAndWires,
@@ -43,12 +41,10 @@ export function Cell({
       onSetRotation,
       onSetCreatureType,
       onSetExitLevel,
-      onSetOtherExitId,
       onSetExitType,
       onSetImmovable,
       onSetLaserColor,
       onSetCountdownValue,
-      onSetIsBucketFull,
       onConnect,
       onDisconnect,
     };
@@ -66,8 +62,6 @@ export function Cell({
         return '#D2B48C'; // light brown
       case 'Void':
         return '#654321'; // dark brown
-      case 'Water':
-        return '#1E90FF'; // blue
       case 'Excluded':
         return '#000000'; // black
       default:
@@ -81,7 +75,7 @@ export function Cell({
       ? ''
       : `=> ${object.connectedObjectIds.join(', ')}`
     );
-    const exitLevelText = object.exitLevel ? ` => ${object.exitLevel} [${object.otherExitId}] [${object.exitType}]` : '';
+    const exitLevelText = object.exitLevel ? ` => ${object.exitLevel} [${object.exitType}]` : '';
     return `${object.id} ${connectedObjectText} ${exitLevelText}`;
   }
   const objectIdsTooltip = _.isEmpty(objects) ? null : objects.map((object) => <div>{getTooltipText(object)}</div>);
