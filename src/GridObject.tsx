@@ -33,6 +33,7 @@ import ball from './images/ball.png';
 import flingerCreature from './images/flinger.png';
 import exitImage from './images/exit.png';
 import postGoalPlatform from './images/post_goal_platform.png';
+import postGoalDoor from './images/post_goal_door.png';
 
 export function GridObject({ objectData }: GridObjectProps) {
   const { type, rotationDirection, isImmovable, laserColor, countdownValue, creatureType } = objectData;
@@ -148,6 +149,9 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Post Goal Platform') {
       return postGoalPlatform;
+    }
+    if (type === 'Post Goal Door') {
+      return postGoalDoor;
     }
     throw new Error(`No image for grid object: ${type}`);
   };
