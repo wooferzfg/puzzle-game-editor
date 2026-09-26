@@ -5,8 +5,8 @@ export type CellType = 'Void' | 'Excluded';
 export const cellTypes: CellType[] = ['Void', 'Excluded'];
 type JsonCellType = Exclude<CellType, 'Void'>;
 
-export type ObjectType = 'Wall' | 'Floor' | 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Ball' | 'Exit' | 'Post Goal Platform' | 'Post Goal Door';
-export const objectTypes: ObjectType[] = ['Wall', 'Floor', 'Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Ball', 'Exit', 'Post Goal Platform', 'Post Goal Door', 'Player', 'Player Two'];
+export type ObjectType = 'Floor' | 'Wall' | 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Ball' | 'Exit' | 'Post Goal Platform' | 'Post Goal Door';
+export const objectTypes: ObjectType[] = ['Floor', 'Wall', 'Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Ball', 'Exit', 'Post Goal Platform', 'Post Goal Door', 'Player', 'Player Two'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button', 'Receiver'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);

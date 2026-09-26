@@ -85,6 +85,12 @@ function App() {
         exitLevel: objectType === 'Exit' ? '' : undefined,
         exitType: objectType === 'Exit' ? 'separate' : undefined,
       });
+
+      // Sort the objects so that floor appears below everything else
+      newGrid[row][column].objects = _.sortBy(
+        newGrid[row][column].objects,
+        (gridObject) => _.indexOf(objectTypes, gridObject.type)
+      );
     }
     updateGrid(newGrid);
   };
