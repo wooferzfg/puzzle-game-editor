@@ -58,7 +58,7 @@ export interface CellState {
 
 interface JsonCellState {
   cellType?: JsonCellType,
-  objects: JsonObjectData[];
+  objects?: JsonObjectData[];
 }
 
 export interface CellCoordinate {

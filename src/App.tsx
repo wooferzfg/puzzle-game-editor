@@ -328,7 +328,7 @@ function App() {
   const loadGridFromJson = (jsonData: JsonFormat) => {
     const gridDataCells = jsonData.start.cells.map(row => (
       row.map(jsonCell => {
-        const cellObjects = jsonCell.objects.map(jsonCellObject => {
+        const cellObjects = (jsonCell.objects ?? []).map(jsonCellObject => {
           const objectId = jsonCellObject.id ?? generateId(jsonCellObject.type);
           return {
             ...jsonCellObject,
@@ -363,14 +363,15 @@ function App() {
   const buildGridJsonData = (currentGrid: GridState): JsonFormat => {
     const gridJsonData = currentGrid.map(row => (
       row.map(cell => {
-        const cellObjects = cell.objects.map(cellObject => {
+        const updatedCellObjects = cell.objects.map(cellObject => {
           if (!_.includes(doorTypes, cellObject.type) && !_.includes(wireTypes, cellObject.type)) {
             return _.omit(cellObject, 'id');
           }
           return cellObject;
         });
+        const jsonCellObjects = _.isEmpty(updatedCellObjects) ? undefined : updatedCellObjects;
         const jsonCellType = cell.cellType === 'Void' ? undefined : cell.cellType;
-        return { ...cell, cellType: jsonCellType, objects: cellObjects };
+        return { ...cell, cellType: jsonCellType, objects: jsonCellObjects };
       })
     ));
     return {
