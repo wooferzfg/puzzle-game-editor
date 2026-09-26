@@ -54,9 +54,9 @@ export function Cell({
     });
   };
 
-  const getColor = (type: CellType | undefined) => {
+  const getColor = (type: CellType) => {
     switch (type) {
-      case undefined:
+      case 'Void':
         return '#654321'; // dark brown
       case 'Excluded':
         return '#000000'; // black

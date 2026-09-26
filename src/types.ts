@@ -1,8 +1,9 @@
 import _ from 'lodash';
 import { ReactNode } from "react";
 
-export type CellType = 'Excluded';
-export const cellTypes: CellType[] = ['Excluded'];
+export type CellType = 'Void' | 'Excluded';
+export const cellTypes: CellType[] = ['Void', 'Excluded'];
+type JsonCellType = Exclude<CellType, 'Void'>;
 
 export type ObjectType = 'Wall' | 'Floor' | 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Ball' | 'Exit' | 'Post Goal Platform' | 'Post Goal Door';
 export const objectTypes: ObjectType[] = ['Wall', 'Floor', 'Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Ball', 'Exit', 'Post Goal Platform', 'Post Goal Door', 'Player', 'Player Two'];
@@ -13,8 +14,8 @@ export const doorTypes: ObjectType[] = ['Door', 'Platform'];
 export const rotatableObjectTypes: ObjectType[] = ['Conveyor', 'Arrow Block', 'Arrow Button', 'Emitter', 'Reflector', 'Exit', 'Creature'];
 export const laserColoredObjectTypes: ObjectType[] = ['Emitter', 'Receiver'];
 export const immovableObjectTypes: ObjectType[] = ['Emitter', 'Reflector'];
-export type ActionType = 'Move Object' | 'Void';
-export const actionTypes: ActionType[] = ['Move Object', 'Void'];
+export type ActionType = 'Move Object';
+export const actionTypes: ActionType[] = ['Move Object'];
 
 export type CreatureType = 'Line of Sight' | 'Flinger';
 export const creatureTypes: CreatureType[] = ['Line of Sight', 'Flinger'];
@@ -51,11 +52,12 @@ export interface ObjectWithCoordinate {
 }
 
 export interface CellState {
-  cellType?: CellType,
+  cellType: CellType,
   objects: ObjectData[],
 }
 
-interface JsonCellState extends Omit<CellState, 'objects'> {
+interface JsonCellState {
+  cellType?: JsonCellType,
   objects: JsonObjectData[];
 }
 
@@ -78,7 +80,7 @@ export interface JsonFormat {
 
 export interface CellProps {
   coordinate: CellCoordinate;
-  cellType?: CellType;
+  cellType: CellType;
   objects: ObjectData[];
   isHighlighted: boolean;
   onMouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;

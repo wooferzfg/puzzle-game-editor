@@ -16,7 +16,8 @@ function App() {
   const [grid, setGrid] = useState<GridState>(
     _.map(_.range(10), () =>
       _.map(_.range(10), () => ({
-        objects: [] as ObjectData[],
+        cellType: 'Void',
+        objects: [],
       })),
     ),
   );
@@ -68,9 +69,7 @@ function App() {
     }
 
     const newGrid = _.cloneDeep(grid);
-    if (selectedButton === 'Void') {
-      delete newGrid[row][column].cellType;
-    } else if (cellTypes.includes(selectedButton as CellType)) {
+    if (cellTypes.includes(selectedButton as CellType)) {
       newGrid[row][column].cellType = selectedButton as CellType;
     } else {
       const objectType = selectedButton as ObjectType;
@@ -130,7 +129,7 @@ function App() {
   const addRow = (position: 'top' | 'bottom') => {
     const newRow: CellState[] = Array.from(
       { length: grid[0].length },
-      () => ({ objects: [] })
+      () => ({ cellType: 'Void', objects: [] })
     );
     if (position === 'top') {
       updateGrid([newRow, ...grid]);
@@ -153,9 +152,9 @@ function App() {
     const newGrid = grid.map(row => {
       const newRow = [...row];
       if (position === 'left') {
-        newRow.unshift({ objects: [] });
+        newRow.unshift({ cellType: 'Void', objects: [] });
       } else {
-        newRow.push({ objects: [] });
+        newRow.push({ cellType: 'Void', objects: [] });
       }
       return newRow;
     });
@@ -322,15 +321,16 @@ function App() {
 
   const loadGridFromJson = (jsonData: JsonFormat) => {
     const gridDataCells = jsonData.start.cells.map(row => (
-      row.map(cell => {
-        const cellObjects = cell.objects.map(jsonCellObject => {
+      row.map(jsonCell => {
+        const cellObjects = jsonCell.objects.map(jsonCellObject => {
           const objectId = jsonCellObject.id ?? generateId(jsonCellObject.type);
           return {
             ...jsonCellObject,
             id: objectId,
           };
         });
-        return { ...cell, objects: cellObjects };
+        const cellType: CellType = jsonCell.cellType ?? 'Void';
+        return { ...jsonCell, cellType, objects: cellObjects };
       })
     ))
 
@@ -338,7 +338,7 @@ function App() {
     setGridStack([]);
   }
 
-  const allButtons: (CellType | ObjectType | ActionType)[] = _.concat(actionTypes, cellTypes, objectTypes);
+  const allButtons: (CellType | ObjectType | ActionType)[] = _.concat(cellTypes, objectTypes, actionTypes);
 
   const getGridObjects = (currentGrid: GridState) => {
     const objects: { [key: string]: ObjectWithCoordinate } = {};
@@ -363,7 +363,8 @@ function App() {
           }
           return cellObject;
         });
-        return { ...cell, objects: cellObjects };
+        const jsonCellType = cell.cellType === 'Void' ? undefined : cell.cellType;
+        return { ...cell, cellType: jsonCellType, objects: cellObjects };
       })
     ));
     return {
