@@ -41,6 +41,10 @@ export interface ObjectData {
   exitType?: ExitType;
 }
 
+interface JsonObjectData extends Omit<ObjectData, 'id'> {
+  id?: string;
+}
+
 export interface ObjectWithCoordinate {
   object: ObjectData;
   coordinate: CellCoordinate;
@@ -51,6 +55,10 @@ export interface CellState {
   objects: ObjectData[],
 }
 
+interface JsonCellState extends Omit<CellState, 'objects'> {
+  objects: JsonObjectData[];
+}
+
 export interface CellCoordinate {
   row: number;
   column: number;
@@ -58,9 +66,11 @@ export interface CellCoordinate {
 
 export type GridState = CellState[][];
 
+type JsonGridState = JsonCellState[][];
+
 export interface JsonFormat {
   start: {
-    cells: GridState,
+    cells: JsonGridState,
     topY: number,
     leftX: number,
   }

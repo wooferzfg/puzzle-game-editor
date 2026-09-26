@@ -359,9 +359,20 @@ function App() {
   const doorAndWireObjects: ObjectWithCoordinate[] = _.filter(allObjects, (object) => doorTypes.includes(object.object.type) || wireTypes.includes(object.object.type));
 
   const buildGridJsonData = (currentGrid: GridState): JsonFormat => {
+    const gridJsonData = currentGrid.map(row => (
+      row.map(cell => {
+        const cellObjects = cell.objects.map(cellObject => {
+          if (!_.includes(doorTypes, cellObject.type) && !_.includes(wireTypes, cellObject.type)) {
+            return _.omit(cellObject, 'id');
+          }
+          return cellObject;
+        });
+        return { ...cell, objects: cellObjects };
+      })
+    ));
     return {
       start: {
-        cells: currentGrid,
+        cells: gridJsonData,
         leftX: 0,
         topY: 0,
       }
