@@ -90,25 +90,8 @@ function App() {
     updateGrid(newGrid);
   };
 
-  const idAlreadyExists = (objectId: string) => {
-    for (let row = 0; row < grid.length; row += 1) {
-      for (let column = 0; column < grid[row].length; column += 1) {
-        if (grid[row][column].objects.some((object) => object.id === objectId)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   const generateId = (objectType: ObjectType) => {
-    const objectName = _.kebabCase(objectType);
-    for (let i = 1; ; i += 1) {
-      const objectId = `${objectName}-${i}`;
-      if (!idAlreadyExists(objectId)) {
-        return objectId;
-      }
-    }
+    return _.uniqueId(`${_.kebabCase(objectType)}-`);
   };
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, row: number, column: number) => {
@@ -338,7 +321,20 @@ function App() {
   };
 
   const loadGridFromJson = (jsonData: JsonFormat) => {
-    setGrid(jsonData.start.cells);
+    const gridDataCells = jsonData.start.cells.map(row => (
+      row.map(cell => {
+        const cellObjects = cell.objects.map(jsonCellObject => {
+          const objectId = jsonCellObject.id ?? generateId(jsonCellObject.type);
+          return {
+            ...jsonCellObject,
+            id: objectId,
+          };
+        });
+        return { ...cell, objects: cellObjects };
+      })
+    ))
+
+    setGrid(gridDataCells);
     setGridStack([]);
   }
 
