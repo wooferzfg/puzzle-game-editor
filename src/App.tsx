@@ -16,7 +16,6 @@ function App() {
   const [grid, setGrid] = useState<GridState>(
     _.map(_.range(10), () =>
       _.map(_.range(10), () => ({
-        cellType: 'Void' as CellType,
         objects: [] as ObjectData[],
       })),
     ),
@@ -69,7 +68,9 @@ function App() {
     }
 
     const newGrid = _.cloneDeep(grid);
-    if (cellTypes.includes(selectedButton as CellType)) {
+    if (selectedButton === 'Void') {
+      delete newGrid[row][column].cellType;
+    } else if (cellTypes.includes(selectedButton as CellType)) {
       newGrid[row][column].cellType = selectedButton as CellType;
     } else {
       const objectType = selectedButton as ObjectType;
@@ -146,7 +147,7 @@ function App() {
   const addRow = (position: 'top' | 'bottom') => {
     const newRow: CellState[] = Array.from(
       { length: grid[0].length },
-      () => ({ cellType: 'Void', objects: [] })
+      () => ({ objects: [] })
     );
     if (position === 'top') {
       updateGrid([newRow, ...grid]);
@@ -169,9 +170,9 @@ function App() {
     const newGrid = grid.map(row => {
       const newRow = [...row];
       if (position === 'left') {
-        newRow.unshift({ cellType: 'Void', objects: [] });
+        newRow.unshift({ objects: [] });
       } else {
-        newRow.push({ cellType: 'Void', objects: [] });
+        newRow.push({ objects: [] });
       }
       return newRow;
     });
@@ -341,7 +342,7 @@ function App() {
     setGridStack([]);
   }
 
-  const allButtons: (CellType | ObjectType | ActionType)[] = _.concat(cellTypes, objectTypes, actionTypes);
+  const allButtons: (CellType | ObjectType | ActionType)[] = _.concat(actionTypes, cellTypes, objectTypes);
 
   const getGridObjects = (currentGrid: GridState) => {
     const objects: { [key: string]: ObjectWithCoordinate } = {};

@@ -54,13 +54,9 @@ export function Cell({
     });
   };
 
-  const getColor = (type: CellType) => {
+  const getColor = (type: CellType | undefined) => {
     switch (type) {
-      case 'Wall':
-        return '#808080'; // gray
-      case 'Floor':
-        return '#D2B48C'; // light brown
-      case 'Void':
+      case undefined:
         return '#654321'; // dark brown
       case 'Excluded':
         return '#000000'; // black
