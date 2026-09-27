@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import { ReactNode } from "react";
 
-export type CellType = 'Wall' | 'Floor' | 'Void' | 'Excluded';
-export const cellTypes: CellType[] = ['Wall', 'Floor', 'Void', 'Excluded'];
+export type CellType = 'Void' | 'Excluded';
+export const cellTypes: CellType[] = ['Void', 'Excluded'];
+type JsonCellType = Exclude<CellType, 'Void'>;
 
-export type ObjectType = 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Ball' | 'Exit' | 'Post Goal Platform' | 'Post Goal Door';
-export const objectTypes: ObjectType[] = ['Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Ball', 'Exit', 'Post Goal Platform', 'Post Goal Door', 'Player', 'Player Two'];
+export type ObjectType = 'Floor' | 'Wall' | 'Conveyor' | 'Box' | 'Player' | 'Player Two' | 'Door' | 'Button' | 'Platform' | 'Arrow Block' | 'Arrow Button' | 'And Wire' | 'Or Wire' | 'Not Wire' | 'Emitter' | 'Reflector' | 'Receiver' | 'Goal' | 'Barrier' | 'Countdown' | 'Creature' | 'Ball' | 'Exit' | 'Post Goal Platform' | 'Post Goal Door';
+export const objectTypes: ObjectType[] = ['Floor', 'Wall', 'Conveyor', 'Box', 'Door', 'Button', 'Platform', 'Arrow Block', 'Arrow Button', 'And Wire', 'Or Wire', 'Not Wire', 'Emitter', 'Reflector', 'Receiver', 'Goal', 'Barrier', 'Countdown', 'Creature', 'Ball', 'Exit', 'Post Goal Platform', 'Post Goal Door', 'Player', 'Player Two'];
 export const switchTypes: ObjectType[] = ['Button', 'Arrow Button', 'Receiver'];
 export const wireTypes: ObjectType[] = ['And Wire', 'Or Wire', 'Not Wire'];
 export const switchAndWireTypes: ObjectType[] = _.concat(switchTypes, wireTypes);
@@ -41,6 +42,10 @@ export interface ObjectData {
   exitType?: ExitType;
 }
 
+interface JsonObjectData extends Omit<ObjectData, 'id'> {
+  id?: string;
+}
+
 export interface ObjectWithCoordinate {
   object: ObjectData;
   coordinate: CellCoordinate;
@@ -51,6 +56,11 @@ export interface CellState {
   objects: ObjectData[],
 }
 
+interface JsonCellState {
+  cellType?: JsonCellType,
+  objects?: JsonObjectData[];
+}
+
 export interface CellCoordinate {
   row: number;
   column: number;
@@ -58,9 +68,11 @@ export interface CellCoordinate {
 
 export type GridState = CellState[][];
 
+type JsonGridState = JsonCellState[][];
+
 export interface JsonFormat {
   start: {
-    cells: GridState,
+    cells: JsonGridState,
     topY: number,
     leftX: number,
   }

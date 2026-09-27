@@ -56,10 +56,6 @@ export function Cell({
 
   const getColor = (type: CellType) => {
     switch (type) {
-      case 'Wall':
-        return '#808080'; // gray
-      case 'Floor':
-        return '#D2B48C'; // light brown
       case 'Void':
         return '#654321'; // dark brown
       case 'Excluded':
