@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Cell } from './Cell';
-import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, immovableObjectTypes, doorTypes, GridState, JsonFormat, LaserColor, laserColoredObjectTypes, ObjectData, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes, CreatureType, ExitType } from './types';
+import { actionTypes, ActionType, CellCoordinate, CellState, CellType, cellTypes, immovableObjectTypes, doorTypes, GridState, JsonFormat, LaserColor, laserColoredObjectTypes, ObjectType, objectTypes, ObjectWithCoordinate, rotatableObjectTypes, RotationDirection, switchAndWireTypes, wireTypes, CreatureType, ExitType } from './types';
 import { exportFile, loadFile } from './Storage';
 
 function App() {
@@ -440,7 +440,7 @@ function App() {
           toast.error(`Failed to load level: ${levelName}`);
         });
     }
-  }, []);
+  }, [loadGridFromJson]);
 
   return (
     <div className="main-container" onMouseUp={handleMouseUp}>
