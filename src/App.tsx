@@ -325,7 +325,7 @@ function App() {
     toast.success('Loaded level from JSON');
   };
 
-  const loadGridFromJson = (jsonData: JsonFormat) => {
+  const loadGridFromJson = useCallback((jsonData: JsonFormat) => {
     const gridDataCells = jsonData.start.cells.map(row => (
       row.map(jsonCell => {
         const cellObjects = (jsonCell.objects ?? []).map(jsonCellObject => {
@@ -342,7 +342,7 @@ function App() {
 
     setGrid(gridDataCells);
     setGridStack([]);
-  }
+  }, []);
 
   const allButtons: (CellType | ObjectType | ActionType)[] = _.concat(cellTypes, objectTypes, actionTypes);
 
