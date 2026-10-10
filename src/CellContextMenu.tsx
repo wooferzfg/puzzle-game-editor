@@ -140,7 +140,7 @@ export function CellContextMenu({ menuId, objects, hideAll, doorsAndWires }: Cel
             }}
             onMouseDown={(event) => event.stopPropagation()}
           >
-            Countdown value: {countdownValue}
+            Countdown value: {countdownValue === null ? 'infinite' : countdownValue}
           </Item>
         );
       });

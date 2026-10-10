@@ -80,7 +80,7 @@ function App() {
         connectedObjectIds: switchAndWireTypes.includes(objectType) ? [] : undefined,
         isImmovable: immovableObjectTypes.includes(objectType) ? false : undefined,
         laserColor: laserColoredObjectTypes.includes(objectType) ? 'red' : undefined,
-        countdownValue: objectType === 'Countdown' ? 1 : undefined,
+        countdownValue: objectType === 'Countdown' ? null : undefined,
         creatureType: objectType === 'Creature' ? 'Line of Sight' : undefined,
         exitLevel: objectType === 'Exit' ? '' : undefined,
         exitType: objectType === 'Exit' ? 'separate' : undefined,
@@ -267,7 +267,7 @@ function App() {
     updateGrid(newGrid);
   };
 
-  const handleSetCountdownValue = ({ row, column }: CellCoordinate, idToUpdate: string, countdownValue: number) => {
+  const handleSetCountdownValue = ({ row, column }: CellCoordinate, idToUpdate: string, countdownValue: number | null) => {
     const newGrid = _.cloneDeep(grid);
     const cell = newGrid[row][column];
 

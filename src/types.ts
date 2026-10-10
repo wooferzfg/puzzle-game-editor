@@ -23,7 +23,7 @@ export const creatureTypes: CreatureType[] = ['Line of Sight', 'Flinger'];
 export type RotationDirection = 'up' | 'right' | 'down' | 'left';
 export const rotationDirections: RotationDirection[] = ['up', 'right', 'down', 'left'];
 
-export const countdownValues = [0, 1, 2, 3, 4, 5];
+export const countdownValues = [null, 1, 2, 3, 4, 5];
 
 export type LaserColor = 'red' | 'blue';
 
@@ -36,7 +36,7 @@ export interface ObjectData {
   connectedObjectIds?: string[];
   isImmovable?: boolean;
   laserColor?: LaserColor;
-  countdownValue?: number;
+  countdownValue?: number | null;
   creatureType?: CreatureType;
   exitLevel?: string;
   exitType?: ExitType;
@@ -90,7 +90,7 @@ export interface CellProps {
   onSetCreatureType: (coordinate: CellCoordinate, id: string, creatureType: CreatureType) => void;
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
-  onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;
+  onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number | null) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
   onSetExitType: (coordinate: CellCoordinate, id: string, exitType: ExitType) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;
@@ -112,7 +112,7 @@ export interface ContextMenuItemClickProps {
   onSetCreatureType: (coordinate: CellCoordinate, id: string, creatureType: CreatureType) => void;
   onSetImmovable: (coordinate: CellCoordinate, id: string, isImmovable: boolean) => void;
   onSetLaserColor: (coordinate: CellCoordinate, id: string, laserColor: LaserColor) => void;
-  onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number) => void;
+  onSetCountdownValue: (coordinate: CellCoordinate, id: string, countdownValue: number | null) => void;
   onSetExitLevel: (coordinate: CellCoordinate, id: string, exitLevel: string) => void;
   onSetExitType: (coordinate: CellCoordinate, id: string, exitType: ExitType) => void;
   onConnect: (coordinate: CellCoordinate, id: string, doorOrWireId: string) => void;

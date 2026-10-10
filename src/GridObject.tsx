@@ -22,7 +22,7 @@ import receiverBlue from './images/receiver_blue.png';
 import receiverRed from './images/receiver_red.png';
 import goalImage from './images/goal_cell.png';
 import barrierImage from './images/rotator_barrier.png';
-import countdownPlatform0 from './images/countdown_platform_0.png';
+import countdownPlatformInfinite from './images/countdown_platform_infinite.png';
 import countdownPlatform1 from './images/countdown_platform_1.png';
 import countdownPlatform2 from './images/countdown_platform_2.png';
 import countdownPlatform3 from './images/countdown_platform_3.png';
@@ -117,8 +117,8 @@ export function GridObject({ objectData }: GridObjectProps) {
     }
     if (type === 'Countdown') {
       switch (countdownValue) {
-        case 0:
-          return countdownPlatform0;
+        case null:
+          return countdownPlatformInfinite;
         case 1:
           return countdownPlatform1;
         case 2:
