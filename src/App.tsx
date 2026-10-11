@@ -103,7 +103,7 @@ function App() {
     if (event.button === 0) { // Left mouse button
       setMouseDownOnCell({ row, column });
       if (selectedButton === 'Move Object') {
-        setObjectIdsBeingMoved(grid[row][column].objects.map((object) => object.id));
+        setObjectIdsBeingMoved(grid[row][column].objects.filter((object) => object.type !== 'Floor').map((object) => object.id));
       } else {
         handleCellUpdate(row, column);
       }
